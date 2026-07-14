@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Votación de productos Ziaja - Cosétika</title>
+<style>
+  :root {
+    --verde: #1B5E20;
+    --verde-claro: #E8F5E9;
+    --verde-medio: #2E7D32;
+    --borde: #E0E0E0;
+    --texto-secundario: #757575;
+    --fondo: #FAFAFA;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, 'Segoe UI', Arial, sans-serif;
+    background: var(--fondo);
+    color: #212121;
+  }
+  header {
+    background: var(--verde);
+    color: white;
+    padding: 24px 16px;
+    text-align: center;
+  }
+  header h1 {
+    margin: 0 0 6px;
+    font-size: 20px;
+    font-weight: 600;
+  }
+  header p {
+    margin: 0;
+    font-size: 14px;
+    opacity: 0.9;
+  }
+  .contenedor {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+
+  .panel-identidad {
+    background: white;
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+    padding: 16px;
+    margin: 16px 0;
+  }
+  .panel-identidad.completo {
+    border-color: var(--verde-medio);
+    background: var(--verde-claro);
+  }
+  .panel-identidad label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #424242;
+  }
+  .fila-identidad {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .fila-identidad > div {
+    flex: 1;
+    min-width: 140px;
+  }
+  input[type="text"], input[type="tel"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    font-size: 14px;
+  }
+  input:focus {
+    outline: none;
+    border-color: var(--verde-medio);
+  }
+
+  .barra-filtros {
+    position: sticky;
+    top: 0;
+    background: var(--fondo);
+    padding: 12px 0;
+    z-index: 10;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  .barra-filtros::-webkit-scrollbar { display: none; }
+  .pill-filtro {
+    flex-shrink: 0;
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--borde);
+    background: white;
+    font-size: 13px;
+    cursor: pointer;
+    color: #424242;
+  }
+  .pill-filtro.activo {
+    background: var(--verde);
+    color: white;
+    border-color: var(--verde);
+  }
+
+  .contador-votos {
+    text-align: center;
+    font-size: 13px;
+    color: var(--texto-secundario);
+    margin: 8px 0 16px;
+  }
+  .contador-votos strong {
+    color: var(--verde);
+  }
+
+  .grid-productos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .tarjeta {
+    background: white;
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.15s, transform 0.1s;
+  }
+  .tarjeta.seleccionada {
+    border-color: var(--verde-medio);
+    border-width: 2px;
+  }
+  .tarjeta-img {
+    width: 100%;
+    height: 120px;
+    background: #F0F0F0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .tarjeta-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .tarjeta-img .sin-foto {
+    font-size: 11px;
+    color: #BDBDBD;
+  }
+  .tarjeta-cuerpo {
+    padding: 10px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .tarjeta-linea {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--texto-secundario);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    margin-bottom: 2px;
+  }
+  .tarjeta-nombre {
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.3;
+    margin-bottom: 8px;
+    flex: 1;
+  }
+  .boton-votar {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid var(--borde);
+    background: white;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--verde);
+    cursor: pointer;
+  }
+  .boton-votar.activo {
+    background: var(--verde);
+    color: white;
+    border-color: var(--verde);
+  }
+
+  .barra-envio {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    border-top: 1px solid var(--borde);
+    padding: 12px 16px;
+    margin: 0 -16px;
+    text-align: center;
+  }
+  .boton-enviar {
+    width: 100%;
+    max-width: 400px;
+    padding: 14px;
+    border-radius: 10px;
+    border: none;
+    background: var(--verde);
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .boton-enviar:disabled {
+    background: #BDBDBD;
+    cursor: not-allowed;
+  }
+
+  .mensaje-final {
+    text-align: center;
+    padding: 60px 20px;
+  }
+  .mensaje-final .icono {
+    font-size: 48px;
+    margin-bottom: 12px;
+  }
+  .mensaje-final h2 {
+    color: var(--verde);
+    margin-bottom: 8px;
+  }
+  .mensaje-final p {
+    color: var(--texto-secundario);
+  }
+
+  .estado-carga, .estado-error {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--texto-secundario);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Vota por los próximos productos Ziaja</h1>
+  <p>Ayúdanos a elegir qué traer a Ecuador. Elige tus favoritos.</p>
+</header>
+
+<div class="contenedor" id="app">
+  <div class="estado-carga" id="estado-carga">Cargando productos...</div>
+</div>
+
+<script>
+(function () {
+
+  // ------------------------------------------------------------------
+  // DATOS DE EJEMPLO (placeholder)
+  // En producción, esto se reemplaza por: fetch('/api/votacion/productos')
+  // El servidor debe devolver un array con este mismo formato:
+  // { id, linea, nombre, categoria, imagen_url }
+  // ------------------------------------------------------------------
+  const PRODUCTOS_EJEMPLO = [
+    { id: 1, linea: "Acai Berry", nombre: "Acai Berry Crema Facial Antioxidante", categoria: "Facial", imagen_url: "" },
+    { id: 2, linea: "Acai Berry", nombre: "Acai Berry Sérum Facial", categoria: "Facial", imagen_url: "" },
+    { id: 3, linea: "Manuka Tree", nombre: "Manuka Tree Mascarilla Purificante", categoria: "Facial", imagen_url: "" },
+    { id: 4, linea: "Manuka Tree", nombre: "Manuka Tree Crema Hidratante", categoria: "Facial", imagen_url: "" },
+    { id: 5, linea: "Argán", nombre: "Crema Facial Protectora Aceite de Argán", categoria: "Facial", imagen_url: "" },
+    { id: 6, linea: "Argán", nombre: "Loción Corporal Protectora Aceite de Argán", categoria: "Corporal", imagen_url: "" },
+    { id: 7, linea: "Ziaja Sun", nombre: "Loción Solar Protectora SPF20", categoria: "Solar", imagen_url: "" },
+    { id: 8, linea: "Ziaja Sun", nombre: "Protector Solar en Spray SPF50+", categoria: "Solar", imagen_url: "" },
+    { id: 9, linea: "Péptidos (MED)", nombre: "Crema de Día SPF30 Péptidos", categoria: "Facial MED", imagen_url: "" },
+    { id: 10, linea: "Péptidos (MED)", nombre: "Contorno de Ojos Péptidos", categoria: "Facial MED", imagen_url: "" },
+    { id: 11, linea: "Coco", nombre: "Gel de Ducha Coco y Naranja", categoria: "Corporal", imagen_url: "" },
+    { id: 12, linea: "Higiene íntima", nombre: "Gel de Higiene Íntima Cremoso", categoria: "Higiene íntima", imagen_url: "" }
+  ];
+
+  // ------------------------------------------------------------------
+  // Estado
+  // ------------------------------------------------------------------
+  let productos = [];
+  let lineas = [];
+  let filtroActivo = "Todas";
+  let seleccionados = new Set();
+  let enviando = false;
+
+  const app = document.getElementById("app");
+
+  // ------------------------------------------------------------------
+  // Carga de productos: intenta la API real; si falla, usa datos de ejemplo
+  // ------------------------------------------------------------------
+  async function cargarProductos() {
+    try {
+      const resp = await fetch("/api/votacion/productos");
+      if (!resp.ok) throw new Error("API no disponible");
+      const data = await resp.json();
+      productos = data;
+    } catch (e) {
+      productos = PRODUCTOS_EJEMPLO;
+    }
+    lineas = [...new Set(productos.map(p => p.linea))].sort();
+    render();
+  }
+
+  // ------------------------------------------------------------------
+  // Render
+  // ------------------------------------------------------------------
+  function render() {
+    const filtrados = filtroActivo === "Todas"
+      ? productos
+      : productos.filter(p => p.linea === filtroActivo);
+
+    app.innerHTML = `
+      <div class="panel-identidad ${nombreValido() && telefonoValido() ? 'completo' : ''}">
+        <div class="fila-identidad">
+          <div>
+            <label for="campo-nombre">Tu nombre / distribuidora</label>
+            <input type="text" id="campo-nombre" placeholder="Ej. María Pérez - Farmacia Central" value="${escapeHtml(estadoIdentidad.nombre)}">
+          </div>
+          <div>
+            <label for="campo-telefono">Teléfono</label>
+            <input type="tel" id="campo-telefono" placeholder="0991234567" value="${escapeHtml(estadoIdentidad.telefono)}">
+          </div>
+        </div>
+      </div>
+
+      <div class="barra-filtros" id="barra-filtros">
+        ${["Todas", ...lineas].map(l => `
+          <button class="pill-filtro ${l === filtroActivo ? 'activo' : ''}" data-linea="${escapeHtml(l)}">${escapeHtml(l)}</button>
+        `).join("")}
+      </div>
+
+      <div class="contador-votos">
+        Has elegido <strong>${seleccionados.size}</strong> producto${seleccionados.size === 1 ? "" : "s"}
+      </div>
+
+      <div class="grid-productos">
+        ${filtrados.map(p => tarjetaHtml(p)).join("")}
+      </div>
+
+      <div class="barra-envio">
+        <button class="boton-enviar" id="boton-enviar" ${puedeEnviar() ? "" : "disabled"}>
+          ${enviando ? "Enviando..." : `Enviar mi votación (${seleccionados.size})`}
+        </button>
+      </div>
+    `;
+
+    document.getElementById("campo-nombre").addEventListener("input", e => {
+      estadoIdentidad.nombre = e.target.value;
+      actualizarBotonEnviar();
+    });
+    document.getElementById("campo-telefono").addEventListener("input", e => {
+      estadoIdentidad.telefono = e.target.value;
+      actualizarBotonEnviar();
+    });
+    document.querySelectorAll(".pill-filtro").forEach(btn => {
+      btn.addEventListener("click", () => {
+        filtroActivo = btn.dataset.linea;
+        render();
+      });
+    });
+    document.querySelectorAll(".tarjeta").forEach(card => {
+      card.addEventListener("click", () => toggleSeleccion(Number(card.dataset.id)));
+    });
+    document.getElementById("boton-enviar").addEventListener("click", enviarVotacion);
+  }
+
+  const estadoIdentidad = { nombre: "", telefono: "" };
+
+  function nombreValido() { return estadoIdentidad.nombre.trim().length >= 3; }
+  function telefonoValido() { return estadoIdentidad.telefono.trim().length >= 7; }
+  function puedeEnviar() {
+    return nombreValido() && telefonoValido() && seleccionados.size > 0 && !enviando;
+  }
+
+  function actualizarBotonEnviar() {
+    const boton = document.getElementById("boton-enviar");
+    const panel = document.querySelector(".panel-identidad");
+    if (boton) boton.disabled = !puedeEnviar();
+    if (panel) panel.classList.toggle("completo", nombreValido() && telefonoValido());
+  }
+
+  function tarjetaHtml(p) {
+    const sel = seleccionados.has(p.id);
+    return `
+      <div class="tarjeta ${sel ? 'seleccionada' : ''}" data-id="${p.id}">
+        <div class="tarjeta-img">
+          ${p.imagen_url
+            ? `<img src="${escapeHtml(p.imagen_url)}" alt="${escapeHtml(p.nombre)}" loading="lazy">`
+            : `<span class="sin-foto">Sin foto</span>`}
+        </div>
+        <div class="tarjeta-cuerpo">
+          <div class="tarjeta-linea">${escapeHtml(p.linea)}</div>
+          <div class="tarjeta-nombre">${escapeHtml(p.nombre)}</div>
+          <button class="boton-votar ${sel ? 'activo' : ''}">${sel ? "Elegido ✓" : "Votar"}</button>
+        </div>
+      </div>
+    `;
+  }
+
+  function toggleSeleccion(id) {
+    if (seleccionados.has(id)) {
+      seleccionados.delete(id);
+    } else {
+      seleccionados.add(id);
+    }
+    render();
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str == null ? "" : String(str);
+    return div.innerHTML;
+  }
+
+  // ------------------------------------------------------------------
+  // Envío
+  // ------------------------------------------------------------------
+  async function enviarVotacion() {
+    if (!puedeEnviar()) return;
+    enviando = true;
+    render();
+
+    const payload = {
+      nombre: estadoIdentidad.nombre.trim(),
+      telefono: estadoIdentidad.telefono.trim(),
+      producto_ids: Array.from(seleccionados)
+    };
+
+    try {
+      const resp = await fetch("/api/votacion/votar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if (!resp.ok) throw new Error("Error al enviar");
+      mostrarPantallaFinal();
+    } catch (e) {
+      enviando = false;
+      render();
+      alert("Hubo un problema al enviar tu votación. Por favor intenta de nuevo.");
+    }
+  }
+
+  function mostrarPantallaFinal() {
+    app.innerHTML = `
+      <div class="mensaje-final">
+        <div class="icono">✓</div>
+        <h2>¡Gracias por tu voto!</h2>
+        <p>Tomamos en cuenta tus ${seleccionados.size} elecciones para decidir los próximos productos Ziaja que traeremos a Ecuador.</p>
+      </div>
+    `;
+  }
+
+  cargarProductos();
+})();
+</script>
+
+</body>
+</html>
