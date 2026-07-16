@@ -124,6 +124,73 @@ const server = http.createServer(async (req, res) => {
   }
 
   // ----------------------------------------------------------
+  // GET /api/votacion/catalogo -> todos los productos (activos e inactivos)
+  // ----------------------------------------------------------
+  if (url === '/api/votacion/catalogo' && req.method === 'GET') {
+    try {
+      const result = await pool.query(
+        `SELECT id, linea, nombre, categoria, imagen_url, activo
+         FROM productos_votacion
+         ORDER BY linea, nombre`
+      );
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify(result.rows));
+    } catch (err) {
+      res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({ error: 'Error al obtener catálogo' }));
+    }
+    return;
+  }
+
+  // ----------------------------------------------------------
+  // PATCH /api/votacion/producto/:id -> activar/desactivar producto
+  // ----------------------------------------------------------
+  const patchMatch = url.match(/^\/api\/votacion\/producto\/(\d+)$/);
+  if (patchMatch && req.method === 'PATCH') {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', async () => {
+      try {
+        const { activo } = JSON.parse(body);
+        const id = parseInt(patchMatch[1]);
+        await pool.query(
+          'UPDATE productos_votacion SET activo = $1 WHERE id = $2',
+          [activo, id]
+        );
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ ok: true }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ error: 'Error al actualizar producto' }));
+      }
+    });
+    return;
+  }
+
+  // ----------------------------------------------------------
+  // GET /api/votacion/distribuidoras -> quién votó qué
+  // ----------------------------------------------------------
+  if (url === '/api/votacion/distribuidoras' && req.method === 'GET') {
+    try {
+      const result = await pool.query(
+        `SELECT v.nombre_distribuidora AS nombre,
+                array_agg(p.nombre ORDER BY p.linea, p.nombre) AS productos
+         FROM votos_ziaja v
+         JOIN productos_votacion p ON p.id = v.producto_id
+         GROUP BY v.nombre_distribuidora
+         ORDER BY v.nombre_distribuidora`
+      );
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify(result.rows));
+    } catch (err) {
+      console.error('Error en /api/votacion/distribuidoras:', err);
+      res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({ error: 'Error al obtener distribuidoras' }));
+    }
+    return;
+  }
+
+  // ----------------------------------------------------------
   // GET /api/votacion/resultados -> ranking de productos más votados
   // ----------------------------------------------------------
   if (url === '/api/votacion/resultados' && req.method === 'GET') {
