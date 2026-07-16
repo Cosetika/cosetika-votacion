@@ -663,75 +663,74 @@
   }
 
   // ── CATÁLOGO ADMIN ─────────────────────────────────────────
-  let todosCatalogo = [];
-
   async function renderCatalogo() {
     const cont = document.getElementById('admin-contenido-tab');
-    cont.innerHTML = '<p style="color:#999;text-align:center;padding:20px">Cargando catálogo...</p>';
+    cont.innerHTML = '<p style="color:#999;text-align:center;padding:20px">Cargando...</p>';
+
+    // Cargar TODOS los productos (activos e inactivos) — misma API pero sin filtro activo
+    let todos = [];
     try {
       const resp = await fetch('/api/votacion/catalogo');
-      todosCatalogo = await resp.json();
+      todos = await resp.json();
     } catch(e) {
       cont.innerHTML = '<p style="color:#C62828;text-align:center;padding:20px">Error al cargar catálogo.</p>';
       return;
     }
 
-    // Agrupar por línea
-    const porLinea = {};
-    todosCatalogo.forEach(p => {
-      const l = p.linea;
-      if (!porLinea[l]) porLinea[l] = [];
-      porLinea[l].push(p);
-    });
-
-    const activos = todosCatalogo.filter(p => p.activo).length;
+    const activos = todos.filter(p => p.activo).length;
     cont.innerHTML = `
       <p style="font-size:13px;color:#666;margin-bottom:16px">
-        <strong>${activos}</strong> de <strong>${todosCatalogo.length}</strong> productos activos (visibles para distribuidoras).
-        Haz clic en una línea para expandirla.
+        <strong>${activos}</strong> de <strong>${todos.length}</strong> activos. Haz clic en un producto para activarlo/desactivarlo.
       </p>
-      ${Object.entries(porLinea).sort((a,b) => a[0].localeCompare(b[0])).map(([linea, prods]) => {
-        const activosLinea = prods.filter(p => p.activo).length;
-        return `
-          <div class="catalogo-linea">
-            <div class="catalogo-linea-header" onclick="toggleLinea('linea-${esc(linea).replace(/\s/g,'-')}')">
-              <span class="catalogo-linea-titulo">${esc(linea)}</span>
-              <div class="catalogo-linea-meta">
-                <span class="catalogo-linea-count">${activosLinea}/${prods.length} activos</span>
-                <span style="color:var(--verde);font-size:18px">▾</span>
+      <div class="grid-productos">
+        ${todos.map(p => `
+          <div onclick="toggleProducto(${p.id})" style="background:white;border:2px solid ${p.activo ? 'var(--verde-medio)' : '#E0E0E0'};border-radius:12px;overflow:hidden;cursor:pointer;opacity:${p.activo ? '1' : '0.45'};transition:all 0.2s;" id="card-cat-${p.id}">
+            <div style="width:100%;height:180px;background:#F8F8F8;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+              ${p.imagen_url
+                ? `<img src="${esc(p.imagen_url)}" alt="${esc(p.nombre)}" loading="lazy" style="max-width:100%;max-height:180px;object-fit:contain;">`
+                : `<span style="font-size:11px;color:#BDBDBD">Sin foto</span>`}
+            </div>
+            <div style="padding:10px;">
+              <div style="font-size:10px;text-transform:uppercase;color:#757575;font-weight:600;margin-bottom:3px;">${esc(p.linea)}</div>
+              <div style="font-size:12px;font-weight:500;line-height:1.3;margin-bottom:8px;">${esc(p.nombre)}</div>
+              <div style="text-align:center;padding:6px;border-radius:8px;font-size:12px;font-weight:600;background:${p.activo ? 'var(--verde)' : '#F5F5F5'};color:${p.activo ? 'white' : '#999'};">
+                ${p.activo ? '✓ Visible' : 'Oculto'}
               </div>
             </div>
-            <div class="catalogo-linea-body" id="linea-${esc(linea).replace(/\s/g,'-')}">
-              ${prods.map(p => `
-                <div class="toggle-wrap" id="wrap-${p.id}">
-                  <div class="toggle-info">
-                    <div class="toggle-nombre">${esc(p.nombre)}</div>
-                    <div class="toggle-cat">${esc(p.categoria)}</div>
-                  </div>
-                  <label class="toggle">
-                    <input type="checkbox" ${p.activo ? 'checked' : ''} onchange="toggleProducto(${p.id}, this.checked)">
-                    <span class="toggle-slider"></span>
-                  </label>
-                </div>`).join('')}
-            </div>
-          </div>`;
-      }).join('')}`;
+          </div>`).join('')}
+      </div>`;
   }
 
-  window.toggleLinea = (id) => {
-    const body = document.getElementById(id);
-    if (body) body.classList.toggle('abierto');
-  };
-
-  window.toggleProducto = async (id, activo) => {
+  window.toggleProducto = async (id) => {
+    const card = document.getElementById('card-cat-' + id);
+    const checkbox = card ? card.querySelector('input[type=checkbox]') : null;
+    // Leer estado actual del elemento
+    const eraActivo = card && card.style.opacity === '1';
+    const nuevoActivo = !eraActivo;
+    // Actualizar UI inmediatamente
+    if (card) {
+      card.style.opacity = nuevoActivo ? '1' : '0.45';
+      card.style.borderColor = nuevoActivo ? 'var(--verde-medio)' : '#E0E0E0';
+      const btn = card.querySelector('div[style*="text-align:center"]');
+      if (btn) {
+        btn.style.background = nuevoActivo ? 'var(--verde)' : '#F5F5F5';
+        btn.style.color = nuevoActivo ? 'white' : '#999';
+        btn.textContent = nuevoActivo ? '✓ Visible' : 'Oculto';
+      }
+    }
     try {
       await fetch('/api/votacion/producto/' + id, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ activo })
+        body: JSON.stringify({ activo: nuevoActivo })
       });
     } catch(e) {
-      alert('Error al actualizar el producto. Intenta de nuevo.');
+      // Revertir si falla
+      if (card) {
+        card.style.opacity = eraActivo ? '1' : '0.45';
+        card.style.borderColor = eraActivo ? 'var(--verde-medio)' : '#E0E0E0';
+      }
+      alert('Error al actualizar. Intenta de nuevo.');
     }
   };
 
