@@ -24,6 +24,24 @@ const server = http.createServer(async (req, res) => {
   }
 
   // ----------------------------------------------------------
+  // GET /images/* -> sirve imágenes estáticas desde la raíz
+  // ----------------------------------------------------------
+  if (url.startsWith('/images/') && req.method === 'GET') {
+    const fileName = path.basename(url);
+    const imgPath = path.join(__dirname, fileName);
+    fs.readFile(imgPath, (err, data) => {
+      if (err) {
+        res.writeHead(404);
+        res.end('Imagen no encontrada');
+        return;
+      }
+      res.writeHead(200, { 'Content-Type': 'image/jpeg' });
+      res.end(data);
+    });
+    return;
+  }
+
+  // ----------------------------------------------------------
   // GET / o /votacion-ziaja -> sirve la página HTML
   // ----------------------------------------------------------
   if ((url === '/' || url === '/votacion-ziaja') && req.method === 'GET') {
@@ -51,11 +69,11 @@ const server = http.createServer(async (req, res) => {
          WHERE activo = TRUE
          ORDER BY linea, nombre`
       );
-      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
       res.end(JSON.stringify(result.rows));
     } catch (err) {
       console.error('Error en /api/votacion/productos:', err);
-      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
       res.end(JSON.stringify({ error: 'Error al obtener productos' }));
     }
     return;
@@ -73,7 +91,7 @@ const server = http.createServer(async (req, res) => {
         const { nombre, telefono, producto_ids } = JSON.parse(body);
 
         if (!nombre || !telefono || !Array.isArray(producto_ids) || producto_ids.length === 0) {
-          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
           res.end(JSON.stringify({ error: 'Datos incompletos' }));
           return;
         }
@@ -94,11 +112,11 @@ const server = http.createServer(async (req, res) => {
           valores
         );
 
-        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify({ ok: true }));
       } catch (err) {
         console.error('Error en /api/votacion/votar:', err);
-        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify({ error: 'Error al registrar votos' }));
       }
     });
@@ -117,11 +135,11 @@ const server = http.createServer(async (req, res) => {
          GROUP BY p.id, p.linea, p.nombre, p.categoria
          ORDER BY total_votos DESC`
       );
-      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
       res.end(JSON.stringify(result.rows));
     } catch (err) {
       console.error('Error en /api/votacion/resultados:', err);
-      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
       res.end(JSON.stringify({ error: 'Error al obtener resultados' }));
     }
     return;
