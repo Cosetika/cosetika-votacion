@@ -124,6 +124,29 @@ const server = http.createServer(async (req, res) => {
   }
 
   // ----------------------------------------------------------
+  // GET /api/votacion/distribuidoras -> quién votó qué
+  // ----------------------------------------------------------
+  if (url === '/api/votacion/distribuidoras' && req.method === 'GET') {
+    try {
+      const result = await pool.query(
+        `SELECT v.nombre_distribuidora AS nombre,
+                array_agg(p.nombre ORDER BY p.linea, p.nombre) AS productos
+         FROM votos_ziaja v
+         JOIN productos_votacion p ON p.id = v.producto_id
+         GROUP BY v.nombre_distribuidora
+         ORDER BY v.nombre_distribuidora`
+      );
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify(result.rows));
+    } catch (err) {
+      console.error('Error en /api/votacion/distribuidoras:', err);
+      res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({ error: 'Error al obtener distribuidoras' }));
+    }
+    return;
+  }
+
+  // ----------------------------------------------------------
   // GET /api/votacion/resultados -> ranking de productos más votados
   // ----------------------------------------------------------
   if (url === '/api/votacion/resultados' && req.method === 'GET') {

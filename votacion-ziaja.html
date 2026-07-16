@@ -13,133 +13,97 @@
     --texto-secundario: #757575;
     --fondo: #FAFAFA;
   }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: -apple-system, 'Segoe UI', Arial, sans-serif;
-    background: var(--fondo);
-    color: #212121;
-  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, 'Segoe UI', Arial, sans-serif; background: var(--fondo); color: #212121; }
+
   header {
     background: var(--verde);
     color: white;
-    padding: 24px 16px;
+    padding: 20px 16px;
     text-align: center;
+    position: relative;
   }
-  header h1 {
-    margin: 0 0 6px;
-    font-size: 20px;
-    font-weight: 600;
+  header h1 { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+  header p { font-size: 14px; opacity: 0.9; }
+  .btn-admin {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.4);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
   }
-  header p {
-    margin: 0;
-    font-size: 14px;
-    opacity: 0.9;
-  }
-  .contenedor {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 16px;
-  }
+  .btn-admin:hover { background: rgba(255,255,255,0.25); }
 
+  .contenedor { max-width: 960px; margin: 0 auto; padding: 16px; }
+
+  /* IDENTIDAD */
   .panel-identidad {
     background: white;
     border: 1px solid var(--borde);
     border-radius: 12px;
     padding: 16px;
-    margin: 16px 0;
+    margin-bottom: 16px;
   }
-  .panel-identidad.completo {
-    border-color: var(--verde-medio);
-    background: var(--verde-claro);
-  }
-  .panel-identidad label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    margin-bottom: 4px;
-    color: #424242;
-  }
-  .fila-identidad {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-  .fila-identidad > div {
-    flex: 1;
-    min-width: 140px;
-  }
-  input[type="text"], input[type="tel"] {
+  .panel-identidad label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #424242; }
+  .panel-identidad input {
     width: 100%;
     padding: 10px 12px;
     border: 1px solid var(--borde);
     border-radius: 8px;
-    font-size: 14px;
+    font-size: 15px;
   }
-  input:focus {
-    outline: none;
-    border-color: var(--verde-medio);
-  }
+  .panel-identidad input:focus { outline: none; border-color: var(--verde-medio); }
 
-  .barra-filtros {
-    position: sticky;
-    top: 0;
-    background: var(--fondo);
-    padding: 12px 0;
-    z-index: 10;
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-  }
-  .barra-filtros::-webkit-scrollbar { display: none; }
-  .pill-filtro {
-    flex-shrink: 0;
-    padding: 8px 14px;
-    border-radius: 20px;
-    border: 1px solid var(--borde);
+  /* FILTRO DROPDOWN */
+  .filtro-wrap {
     background: white;
-    font-size: 13px;
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .filtro-wrap label { font-size: 13px; font-weight: 600; color: #424242; white-space: nowrap; }
+  .filtro-wrap select {
+    flex: 1;
+    padding: 9px 12px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    font-size: 14px;
+    background: white;
     cursor: pointer;
-    color: #424242;
   }
-  .pill-filtro.activo {
-    background: var(--verde);
-    color: white;
-    border-color: var(--verde);
-  }
+  .filtro-wrap select:focus { outline: none; border-color: var(--verde-medio); }
 
-  .contador-votos {
-    text-align: center;
-    font-size: 13px;
-    color: var(--texto-secundario);
-    margin: 8px 0 16px;
-  }
-  .contador-votos strong {
-    color: var(--verde);
-  }
+  .contador-votos { text-align: center; font-size: 13px; color: var(--texto-secundario); margin-bottom: 16px; }
+  .contador-votos strong { color: var(--verde); }
 
+  /* GRID */
   .grid-productos {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 12px;
-    margin-bottom: 24px;
+    margin-bottom: 80px;
   }
-
   .tarjeta {
     background: white;
-    border: 1px solid var(--borde);
+    border: 2px solid var(--borde);
     border-radius: 12px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    transition: border-color 0.15s, transform 0.1s;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s;
   }
-  .tarjeta.seleccionada {
-    border-color: var(--verde-medio);
-    border-width: 2px;
-  }
+  .tarjeta:hover { border-color: #A5D6A7; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+  .tarjeta.seleccionada { border-color: var(--verde-medio); box-shadow: 0 0 0 1px var(--verde-medio); }
   .tarjeta-img {
     width: 100%;
     height: 180px;
@@ -148,65 +112,34 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    flex-shrink: 0;
   }
-  .tarjeta-img img {
-    max-width: 100%;
-    max-height: 180px;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-  }
-  .tarjeta-img .sin-foto {
-    font-size: 11px;
-    color: #BDBDBD;
-  }
-  .tarjeta-cuerpo {
-    padding: 10px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-  .tarjeta-linea {
-    font-size: 10px;
-    text-transform: uppercase;
-    color: var(--texto-secundario);
-    font-weight: 600;
-    letter-spacing: 0.3px;
-    margin-bottom: 2px;
-  }
-  .tarjeta-nombre {
-    font-size: 13px;
-    font-weight: 500;
-    line-height: 1.3;
-    margin-bottom: 8px;
-    flex: 1;
-  }
+  .tarjeta-img img { max-width: 100%; max-height: 180px; width: auto; height: auto; object-fit: contain; }
+  .tarjeta-img .sin-foto { font-size: 11px; color: #BDBDBD; }
+  .tarjeta-cuerpo { padding: 10px; flex: 1; display: flex; flex-direction: column; }
+  .tarjeta-linea { font-size: 10px; text-transform: uppercase; color: var(--texto-secundario); font-weight: 600; margin-bottom: 3px; }
+  .tarjeta-nombre { font-size: 12px; font-weight: 500; line-height: 1.3; flex: 1; margin-bottom: 8px; }
   .boton-votar {
     width: 100%;
-    padding: 8px;
+    padding: 7px;
     border-radius: 8px;
     border: 1px solid var(--borde);
     background: white;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     color: var(--verde);
     cursor: pointer;
   }
-  .boton-votar.activo {
-    background: var(--verde);
-    color: white;
-    border-color: var(--verde);
-  }
+  .boton-votar.activo { background: var(--verde); color: white; border-color: var(--verde); }
 
+  /* BARRA ENVIO */
   .barra-envio {
-    position: sticky;
-    bottom: 0;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
     background: white;
     border-top: 1px solid var(--borde);
     padding: 12px 16px;
-    margin: 0 -16px;
     text-align: center;
+    z-index: 100;
   }
   .boton-enviar {
     width: 100%;
@@ -220,172 +153,289 @@
     font-weight: 600;
     cursor: pointer;
   }
-  .boton-enviar:disabled {
-    background: #BDBDBD;
-    cursor: not-allowed;
-  }
+  .boton-enviar:disabled { background: #BDBDBD; cursor: not-allowed; }
 
-  .mensaje-final {
-    text-align: center;
-    padding: 60px 20px;
+  .mensaje-final { text-align: center; padding: 60px 20px; }
+  .mensaje-final .icono { font-size: 56px; margin-bottom: 16px; }
+  .mensaje-final h2 { color: var(--verde); margin-bottom: 8px; font-size: 22px; }
+  .mensaje-final p { color: var(--texto-secundario); }
+
+  /* MODAL ADMIN */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
   }
-  .mensaje-final .icono {
-    font-size: 48px;
+  .modal-overlay.visible { display: flex; }
+  .modal {
+    background: white;
+    border-radius: 16px;
+    padding: 28px;
+    width: 90%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal h2 { font-size: 18px; margin-bottom: 16px; color: var(--verde); }
+  .modal input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    font-size: 15px;
     margin-bottom: 12px;
   }
-  .mensaje-final h2 {
-    color: var(--verde);
+  .modal input:focus { outline: none; border-color: var(--verde-medio); }
+  .modal-btns { display: flex; gap: 8px; }
+  .btn-primary {
+    flex: 1;
+    padding: 10px;
+    background: var(--verde);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn-secondary {
+    flex: 1;
+    padding: 10px;
+    background: white;
+    color: #424242;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .error-msg { color: #C62828; font-size: 13px; margin-bottom: 8px; }
+
+  /* PANEL ADMIN */
+  .panel-admin { display: none; }
+  .panel-admin.visible { display: block; }
+  .admin-header {
+    background: var(--verde);
+    color: white;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .admin-header h2 { font-size: 18px; }
+  .btn-salir {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.4);
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+  }
+  .admin-contenido { max-width: 960px; margin: 0 auto; padding: 20px 16px; }
+  .admin-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+  .admin-tab {
+    padding: 8px 20px;
+    border-radius: 8px;
+    border: 1px solid var(--borde);
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: #424242;
+  }
+  .admin-tab.activo { background: var(--verde); color: white; border-color: var(--verde); }
+
+  .ranking-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+    padding: 12px 16px;
     margin-bottom: 8px;
   }
-  .mensaje-final p {
-    color: var(--texto-secundario);
+  .ranking-pos { font-size: 18px; font-weight: 700; color: var(--verde); min-width: 32px; }
+  .ranking-info { flex: 1; }
+  .ranking-nombre { font-size: 14px; font-weight: 600; }
+  .ranking-linea { font-size: 12px; color: var(--texto-secundario); }
+  .ranking-votos {
+    background: var(--verde-claro);
+    color: var(--verde);
+    font-weight: 700;
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
   }
 
-  .estado-carga, .estado-error {
-    text-align: center;
-    padding: 40px 20px;
-    color: var(--texto-secundario);
+  .distrib-item {
+    background: white;
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 8px;
   }
+  .distrib-nombre { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .distrib-productos { font-size: 12px; color: var(--texto-secundario); line-height: 1.6; }
+  .distrib-count { font-size: 11px; color: var(--verde); font-weight: 600; margin-bottom: 4px; }
+
+  .resumen-stat {
+    background: white;
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    display: inline-block;
+    margin: 0 8px 16px 0;
+    min-width: 140px;
+  }
+  .resumen-stat .num { font-size: 32px; font-weight: 700; color: var(--verde); }
+  .resumen-stat .lbl { font-size: 12px; color: var(--texto-secundario); margin-top: 4px; }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>Vota por los próximos productos Ziaja</h1>
-  <p>Ayúdanos a elegir qué traer a Ecuador. Elige tus favoritos.</p>
-</header>
+<!-- PANEL ADMIN -->
+<div class="panel-admin" id="panel-admin">
+  <div class="admin-header">
+    <h2>Panel de Administración — Votación Ziaja</h2>
+    <button class="btn-salir" onclick="salirAdmin()">Salir</button>
+  </div>
+  <div class="admin-contenido">
+    <div id="admin-resumen"></div>
+    <div class="admin-tabs">
+      <button class="admin-tab activo" onclick="cambiarTab('ranking', this)">Ranking de productos</button>
+      <button class="admin-tab" onclick="cambiarTab('distribuidoras', this)">Distribuidoras</button>
+    </div>
+    <div id="admin-contenido-tab"></div>
+  </div>
+</div>
 
-<div class="contenedor" id="app">
-  <div class="estado-carga" id="estado-carga">Cargando productos...</div>
+<!-- PAGINA PRINCIPAL -->
+<div id="pagina-principal">
+  <header>
+    <h1>Vota por los próximos productos Ziaja</h1>
+    <p>Ayúdanos a elegir qué traer a Ecuador. Elige tus favoritos.</p>
+    <button class="btn-admin" onclick="abrirModalAdmin()">Admin</button>
+  </header>
+
+  <div class="contenedor" id="app">
+    <div style="text-align:center;padding:40px;color:#999">Cargando productos...</div>
+  </div>
+
+  <div class="barra-envio">
+    <button class="boton-enviar" id="boton-enviar" disabled>Enviar mi votación (0)</button>
+  </div>
+</div>
+
+<!-- MODAL ADMIN LOGIN -->
+<div class="modal-overlay" id="modal-admin">
+  <div class="modal">
+    <h2>Acceso Admin</h2>
+    <input type="password" id="input-password" placeholder="Contraseña" onkeydown="if(event.key==='Enter') verificarPassword()">
+    <div class="error-msg" id="error-password" style="display:none">Contraseña incorrecta</div>
+    <div class="modal-btns">
+      <button class="btn-secondary" onclick="cerrarModalAdmin()">Cancelar</button>
+      <button class="btn-primary" onclick="verificarPassword()">Ingresar</button>
+    </div>
+  </div>
 </div>
 
 <script>
-(function () {
+(function() {
 
-  // ------------------------------------------------------------------
-  // DATOS DE EJEMPLO (placeholder)
-  // En producción, esto se reemplaza por: fetch('/api/votacion/productos')
-  // El servidor debe devolver un array con este mismo formato:
-  // { id, linea, nombre, categoria, imagen_url }
-  // ------------------------------------------------------------------
-  const PRODUCTOS_EJEMPLO = [
-    { id: 1, linea: "Acai Berry", nombre: "Acai Berry Crema Facial Antioxidante", categoria: "Facial", imagen_url: "" },
-    { id: 2, linea: "Acai Berry", nombre: "Acai Berry Sérum Facial", categoria: "Facial", imagen_url: "" },
-    { id: 3, linea: "Manuka Tree", nombre: "Manuka Tree Mascarilla Purificante", categoria: "Facial", imagen_url: "" },
-    { id: 4, linea: "Manuka Tree", nombre: "Manuka Tree Crema Hidratante", categoria: "Facial", imagen_url: "" },
-    { id: 5, linea: "Argán", nombre: "Crema Facial Protectora Aceite de Argán", categoria: "Facial", imagen_url: "" },
-    { id: 6, linea: "Argán", nombre: "Loción Corporal Protectora Aceite de Argán", categoria: "Corporal", imagen_url: "" },
-    { id: 7, linea: "Ziaja Sun", nombre: "Loción Solar Protectora SPF20", categoria: "Solar", imagen_url: "" },
-    { id: 8, linea: "Ziaja Sun", nombre: "Protector Solar en Spray SPF50+", categoria: "Solar", imagen_url: "" },
-    { id: 9, linea: "Péptidos (MED)", nombre: "Crema de Día SPF30 Péptidos", categoria: "Facial MED", imagen_url: "" },
-    { id: 10, linea: "Péptidos (MED)", nombre: "Contorno de Ojos Péptidos", categoria: "Facial MED", imagen_url: "" },
-    { id: 11, linea: "Coco", nombre: "Gel de Ducha Coco y Naranja", categoria: "Corporal", imagen_url: "" },
-    { id: 12, linea: "Higiene íntima", nombre: "Gel de Higiene Íntima Cremoso", categoria: "Higiene íntima", imagen_url: "" }
-  ];
+  // ── CONFIGURACIÓN ──────────────────────────────────────────
+  const ADMIN_PASSWORD = 'cosetika2025';
 
-  // ------------------------------------------------------------------
-  // Estado
-  // ------------------------------------------------------------------
+  // Fusión de líneas: nombre original en DB -> nombre a mostrar
+  const FUSION_LINEAS = {
+    'Mascarillas con Ácidos': 'Mascarillas Faciales',
+    'Aceites de Masaje': 'Spa & Masajes',
+    'Baltic Home Spa Wellness': 'Spa & Masajes',
+    'Geles de Baño y Ducha': 'Geles y Baño',
+    'Juicy Skin Care': 'Geles y Baño',
+    'Delicious Skin Care': 'Geles y Baño',
+    'MED Skin Relief': 'MED Rosácea & Piel Sensible',
+    'MED Capilares Dilatados / Rosácea': 'MED Rosácea & Piel Sensible',
+  };
+
+  function lineaMostrar(linea) {
+    return FUSION_LINEAS[linea] || linea;
+  }
+
+  // ── ESTADO ─────────────────────────────────────────────────
   let productos = [];
-  let lineas = [];
-  let filtroActivo = "Todas";
+  let lineasMenu = [];
+  let filtroActivo = 'Todas';
   let seleccionados = new Set();
+  let nombre = '';
   let enviando = false;
 
-  const app = document.getElementById("app");
-
-  // ------------------------------------------------------------------
-  // Carga de productos: intenta la API real; si falla, usa datos de ejemplo
-  // ------------------------------------------------------------------
+  // ── CARGA ──────────────────────────────────────────────────
   async function cargarProductos() {
     try {
-      const resp = await fetch("/api/votacion/productos");
-      if (!resp.ok) throw new Error("API no disponible");
-      const data = await resp.json();
-      productos = data;
-    } catch (e) {
-      productos = PRODUCTOS_EJEMPLO;
+      const resp = await fetch('/api/votacion/productos');
+      if (!resp.ok) throw new Error();
+      productos = await resp.json();
+    } catch(e) {
+      productos = [];
     }
-    lineas = [...new Set(productos.map(p => p.linea))].sort();
+    // Calcular líneas únicas del menú (ya fusionadas)
+    const set = new Set(productos.map(p => lineaMostrar(p.linea)));
+    lineasMenu = [...set].sort();
     render();
   }
 
-  // ------------------------------------------------------------------
-  // Render
-  // ------------------------------------------------------------------
+  // ── RENDER ─────────────────────────────────────────────────
   function render() {
-    const filtrados = filtroActivo === "Todas"
+    const filtrados = filtroActivo === 'Todas'
       ? productos
-      : productos.filter(p => p.linea === filtroActivo);
+      : productos.filter(p => lineaMostrar(p.linea) === filtroActivo);
 
+    const app = document.getElementById('app');
     app.innerHTML = `
-      <div class="panel-identidad ${nombreValido() && telefonoValido() ? 'completo' : ''}">
-        <div class="fila-identidad">
-          <div>
-            <label for="campo-nombre">Tu nombre / distribuidora</label>
-            <input type="text" id="campo-nombre" placeholder="Ej. María Pérez - Farmacia Central" value="${escapeHtml(estadoIdentidad.nombre)}">
-          </div>
-          <div>
-            <label for="campo-telefono">Teléfono</label>
-            <input type="tel" id="campo-telefono" placeholder="0991234567" value="${escapeHtml(estadoIdentidad.telefono)}">
-          </div>
-        </div>
+      <div class="panel-identidad">
+        <label for="campo-nombre">Tu nombre</label>
+        <input type="text" id="campo-nombre" placeholder="Ej. María Pérez" value="${esc(nombre)}">
       </div>
 
-      <div class="barra-filtros" id="barra-filtros">
-        ${["Todas", ...lineas].map(l => `
-          <button class="pill-filtro ${l === filtroActivo ? 'activo' : ''}" data-linea="${escapeHtml(l)}">${escapeHtml(l)}</button>
-        `).join("")}
+      <div class="filtro-wrap">
+        <label>Filtrar por línea:</label>
+        <select id="select-linea">
+          <option value="Todas">— Todas las líneas —</option>
+          ${lineasMenu.map(l => `<option value="${esc(l)}" ${l === filtroActivo ? 'selected' : ''}>${esc(l)}</option>`).join('')}
+        </select>
       </div>
 
       <div class="contador-votos">
-        Has elegido <strong>${seleccionados.size}</strong> producto${seleccionados.size === 1 ? "" : "s"}
+        Has elegido <strong>${seleccionados.size}</strong> producto${seleccionados.size !== 1 ? 's' : ''}
       </div>
 
       <div class="grid-productos">
-        ${filtrados.map(p => tarjetaHtml(p)).join("")}
-      </div>
-
-      <div class="barra-envio">
-        <button class="boton-enviar" id="boton-enviar" ${puedeEnviar() ? "" : "disabled"}>
-          ${enviando ? "Enviando..." : `Enviar mi votación (${seleccionados.size})`}
-        </button>
+        ${filtrados.map(p => tarjetaHtml(p)).join('')}
       </div>
     `;
 
-    document.getElementById("campo-nombre").addEventListener("input", e => {
-      estadoIdentidad.nombre = e.target.value;
-      actualizarBotonEnviar();
+    document.getElementById('campo-nombre').addEventListener('input', e => {
+      nombre = e.target.value;
+      actualizarBoton();
     });
-    document.getElementById("campo-telefono").addEventListener("input", e => {
-      estadoIdentidad.telefono = e.target.value;
-      actualizarBotonEnviar();
-    });
-    document.querySelectorAll(".pill-filtro").forEach(btn => {
-      btn.addEventListener("click", () => {
-        filtroActivo = btn.dataset.linea;
-        render();
-      });
-    });
-    document.querySelectorAll(".tarjeta").forEach(card => {
-      card.addEventListener("click", () => toggleSeleccion(Number(card.dataset.id)));
-    });
-    document.getElementById("boton-enviar").addEventListener("click", enviarVotacion);
-  }
 
-  const estadoIdentidad = { nombre: "", telefono: "" };
+    document.getElementById('select-linea').addEventListener('change', e => {
+      filtroActivo = e.target.value;
+      render();
+    });
 
-  function nombreValido() { return estadoIdentidad.nombre.trim().length >= 3; }
-  function telefonoValido() { return estadoIdentidad.telefono.trim().length >= 7; }
-  function puedeEnviar() {
-    return nombreValido() && telefonoValido() && seleccionados.size > 0 && !enviando;
-  }
+    document.querySelectorAll('.tarjeta').forEach(card => {
+      card.addEventListener('click', () => toggle(Number(card.dataset.id)));
+    });
 
-  function actualizarBotonEnviar() {
-    const boton = document.getElementById("boton-enviar");
-    const panel = document.querySelector(".panel-identidad");
-    if (boton) boton.disabled = !puedeEnviar();
-    if (panel) panel.classList.toggle("completo", nombreValido() && telefonoValido());
+    actualizarBoton();
   }
 
   function tarjetaHtml(p) {
@@ -394,78 +444,166 @@
       <div class="tarjeta ${sel ? 'seleccionada' : ''}" data-id="${p.id}">
         <div class="tarjeta-img">
           ${p.imagen_url
-            ? `<img src="${escapeHtml(p.imagen_url)}" alt="${escapeHtml(p.nombre)}" loading="lazy">`
+            ? `<img src="${esc(p.imagen_url)}" alt="${esc(p.nombre)}" loading="lazy">`
             : `<span class="sin-foto">Sin foto</span>`}
         </div>
         <div class="tarjeta-cuerpo">
-          <div class="tarjeta-linea">${escapeHtml(p.linea)}</div>
-          <div class="tarjeta-nombre">${escapeHtml(p.nombre)}</div>
-          <button class="boton-votar ${sel ? 'activo' : ''}">${sel ? "Elegido ✓" : "Votar"}</button>
+          <div class="tarjeta-linea">${esc(lineaMostrar(p.linea))}</div>
+          <div class="tarjeta-nombre">${esc(p.nombre)}</div>
+          <button class="boton-votar ${sel ? 'activo' : ''}">${sel ? 'Elegido ✓' : 'Votar'}</button>
         </div>
-      </div>
-    `;
+      </div>`;
   }
 
-  function toggleSeleccion(id) {
-    if (seleccionados.has(id)) {
-      seleccionados.delete(id);
-    } else {
-      seleccionados.add(id);
-    }
+  function toggle(id) {
+    if (seleccionados.has(id)) seleccionados.delete(id);
+    else seleccionados.add(id);
     render();
   }
 
-  function escapeHtml(str) {
-    if (str == null) return "";
-    return String(str)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
+  function puedeEnviar() {
+    return nombre.trim().length >= 2 && seleccionados.size > 0 && !enviando;
   }
 
-  // ------------------------------------------------------------------
-  // Envío
-  // ------------------------------------------------------------------
-  async function enviarVotacion() {
+  function actualizarBoton() {
+    const btn = document.getElementById('boton-enviar');
+    if (!btn) return;
+    btn.disabled = !puedeEnviar();
+    btn.textContent = enviando ? 'Enviando...' : `Enviar mi votación (${seleccionados.size})`;
+  }
+
+  // ── ENVÍO ──────────────────────────────────────────────────
+  document.getElementById('boton-enviar').addEventListener('click', async () => {
     if (!puedeEnviar()) return;
     enviando = true;
-    render();
-
-    const payload = {
-      nombre: estadoIdentidad.nombre.trim(),
-      telefono: estadoIdentidad.telefono.trim(),
-      producto_ids: Array.from(seleccionados)
-    };
-
+    actualizarBoton();
     try {
-      const resp = await fetch("/api/votacion/votar", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+      const resp = await fetch('/api/votacion/votar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre: nombre.trim(), telefono: 'N/A', producto_ids: [...seleccionados] })
       });
-      if (!resp.ok) throw new Error("Error al enviar");
-      mostrarPantallaFinal();
-    } catch (e) {
+      if (!resp.ok) throw new Error();
+      document.getElementById('app').innerHTML = `
+        <div class="mensaje-final">
+          <div class="icono">✅</div>
+          <h2>¡Gracias por tu voto!</h2>
+          <p>Registramos tus ${seleccionados.size} elecciones. ¡Gracias por ayudarnos a elegir los próximos productos Ziaja para Ecuador!</p>
+        </div>`;
+      document.querySelector('.barra-envio').style.display = 'none';
+    } catch(e) {
       enviando = false;
-      render();
-      alert("Hubo un problema al enviar tu votación. Por favor intenta de nuevo.");
+      actualizarBoton();
+      alert('Hubo un problema al enviar. Por favor intenta de nuevo.');
+    }
+  });
+
+  // ── ADMIN ──────────────────────────────────────────────────
+  window.abrirModalAdmin = () => {
+    document.getElementById('modal-admin').classList.add('visible');
+    document.getElementById('input-password').value = '';
+    document.getElementById('error-password').style.display = 'none';
+    setTimeout(() => document.getElementById('input-password').focus(), 100);
+  };
+
+  window.cerrarModalAdmin = () => {
+    document.getElementById('modal-admin').classList.remove('visible');
+  };
+
+  window.verificarPassword = () => {
+    const pw = document.getElementById('input-password').value;
+    if (pw === ADMIN_PASSWORD) {
+      cerrarModalAdmin();
+      abrirAdmin();
+    } else {
+      document.getElementById('error-password').style.display = 'block';
+    }
+  };
+
+  window.salirAdmin = () => {
+    document.getElementById('panel-admin').classList.remove('visible');
+    document.getElementById('pagina-principal').style.display = 'block';
+  };
+
+  let tabActual = 'ranking';
+  let datosAdmin = null;
+
+  async function abrirAdmin() {
+    document.getElementById('pagina-principal').style.display = 'none';
+    document.getElementById('panel-admin').classList.add('visible');
+    const resp = await fetch('/api/votacion/resultados');
+    datosAdmin = await resp.json();
+    renderResumen();
+    renderTab();
+  }
+
+  function renderResumen() {
+    const totalVotos = datosAdmin.reduce((s, p) => s + Number(p.total_votos), 0);
+    const distribuidoras = new Set();
+    // No tenemos los nombres aquí, así que mostramos total de votos y productos con votos
+    const conVotos = datosAdmin.filter(p => Number(p.total_votos) > 0).length;
+    document.getElementById('admin-resumen').innerHTML = `
+      <div style="margin-bottom:16px">
+        <div class="resumen-stat"><div class="num">${totalVotos}</div><div class="lbl">Votos totales</div></div>
+        <div class="resumen-stat"><div class="num">${conVotos}</div><div class="lbl">Productos votados</div></div>
+        <div class="resumen-stat"><div class="num">${datosAdmin.length}</div><div class="lbl">Productos en catálogo</div></div>
+      </div>`;
+  }
+
+  window.cambiarTab = (tab, el) => {
+    tabActual = tab;
+    document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('activo'));
+    el.classList.add('activo');
+    renderTab();
+  };
+
+  async function renderTab() {
+    const cont = document.getElementById('admin-contenido-tab');
+    if (tabActual === 'ranking') {
+      const ordenados = [...datosAdmin].sort((a, b) => Number(b.total_votos) - Number(a.total_votos));
+      const conVotos = ordenados.filter(p => Number(p.total_votos) > 0);
+      if (conVotos.length === 0) {
+        cont.innerHTML = '<p style="color:#999;text-align:center;padding:40px">Aún no hay votos registrados.</p>';
+        return;
+      }
+      cont.innerHTML = conVotos.map((p, i) => `
+        <div class="ranking-item">
+          <div class="ranking-pos">#${i + 1}</div>
+          <div class="ranking-info">
+            <div class="ranking-nombre">${esc(p.nombre)}</div>
+            <div class="ranking-linea">${esc(lineaMostrar(p.linea))}</div>
+          </div>
+          <div class="ranking-votos">${p.total_votos} voto${Number(p.total_votos) !== 1 ? 's' : ''}</div>
+        </div>`).join('');
+    } else {
+      // Cargar distribuidoras
+      cont.innerHTML = '<p style="color:#999;text-align:center;padding:20px">Cargando...</p>';
+      try {
+        const resp = await fetch('/api/votacion/distribuidoras');
+        const data = await resp.json();
+        if (data.length === 0) {
+          cont.innerHTML = '<p style="color:#999;text-align:center;padding:40px">Aún no hay votos registrados.</p>';
+          return;
+        }
+        cont.innerHTML = data.map(d => `
+          <div class="distrib-item">
+            <div class="distrib-nombre">${esc(d.nombre)}</div>
+            <div class="distrib-count">${d.productos.length} producto${d.productos.length !== 1 ? 's' : ''} elegido${d.productos.length !== 1 ? 's' : ''}</div>
+            <div class="distrib-productos">${d.productos.map(p => esc(p)).join(' · ')}</div>
+          </div>`).join('');
+      } catch(e) {
+        cont.innerHTML = '<p style="color:#C62828;text-align:center;padding:20px">Error al cargar datos.</p>';
+      }
     }
   }
 
-  function mostrarPantallaFinal() {
-    app.innerHTML = `
-      <div class="mensaje-final">
-        <div class="icono">✓</div>
-        <h2>¡Gracias por tu voto!</h2>
-        <p>Tomamos en cuenta tus ${seleccionados.size} elecciones para decidir los próximos productos Ziaja que traeremos a Ecuador.</p>
-      </div>
-    `;
+  function esc(str) {
+    if (str == null) return '';
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
   cargarProductos();
 })();
 </script>
-
 </body>
 </html>
