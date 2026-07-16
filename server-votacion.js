@@ -24,6 +24,23 @@ const server = http.createServer(async (req, res) => {
   }
 
   // ----------------------------------------------------------
+  // GET /images/* -> sirve imágenes estáticas
+  // ----------------------------------------------------------
+  if (url.startsWith('/images/') && req.method === 'GET') {
+    const imgPath = path.join(__dirname, url);
+    fs.readFile(imgPath, (err, data) => {
+      if (err) {
+        res.writeHead(404);
+        res.end('Imagen no encontrada');
+        return;
+      }
+      res.writeHead(200, { 'Content-Type': 'image/jpeg' });
+      res.end(data);
+    });
+    return;
+  }
+
+  // ----------------------------------------------------------
   // GET / o /votacion-ziaja -> sirve la página HTML
   // ----------------------------------------------------------
   if ((url === '/' || url === '/votacion-ziaja') && req.method === 'GET') {
