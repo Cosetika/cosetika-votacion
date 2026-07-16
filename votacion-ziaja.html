@@ -694,7 +694,7 @@
             <div style="padding:10px;">
               <div style="font-size:10px;text-transform:uppercase;color:#757575;font-weight:600;margin-bottom:3px;">${esc(p.linea)}</div>
               <div style="font-size:12px;font-weight:500;line-height:1.3;margin-bottom:8px;">${esc(p.nombre)}</div>
-              <div style="text-align:center;padding:6px;border-radius:8px;font-size:12px;font-weight:600;background:${p.activo ? 'var(--verde)' : '#F5F5F5'};color:${p.activo ? 'white' : '#999'};">
+              <div style="text-align:center;padding:6px;border-radius:8px;font-size:12px;font-weight:600;background:${p.activo ? 'var(--verde)' : '#F5F5F5'};color:${p.activo ? 'white' : '#999'};" class="cat-btn" data-activo="${p.activo ? '1' : '0'}">
                 ${p.activo ? '✓ Visible' : 'Oculto'}
               </div>
             </div>
@@ -704,8 +704,8 @@
 
   window.toggleProducto = async (id) => {
     const card = document.getElementById('card-cat-' + id);
-    const btn = card ? card.querySelector('div[style*="text-align:center"]') : null;
-    const eraActivo = btn && btn.textContent.includes('Visible');
+    const btn = card ? card.querySelector('.cat-btn') : null;
+    const eraActivo = btn && btn.dataset.activo === '1';
     const nuevoActivo = !eraActivo;
     // Actualizar UI inmediatamente
     if (card) {
@@ -713,6 +713,7 @@
       card.style.borderColor = nuevoActivo ? 'var(--verde-medio)' : '#E0E0E0';
     }
     if (btn) {
+      btn.dataset.activo = nuevoActivo ? '1' : '0';
       btn.style.background = nuevoActivo ? 'var(--verde)' : '#F5F5F5';
       btn.style.color = nuevoActivo ? 'white' : '#999';
       btn.textContent = nuevoActivo ? '✓ Visible' : 'Oculto';
@@ -730,6 +731,7 @@
         card.style.borderColor = eraActivo ? 'var(--verde-medio)' : '#E0E0E0';
       }
       if (btn) {
+        btn.dataset.activo = eraActivo ? '1' : '0';
         btn.style.background = eraActivo ? 'var(--verde)' : '#F5F5F5';
         btn.style.color = eraActivo ? 'white' : '#999';
         btn.textContent = eraActivo ? '✓ Visible' : 'Oculto';
