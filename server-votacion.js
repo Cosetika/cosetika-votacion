@@ -24,10 +24,11 @@ const server = http.createServer(async (req, res) => {
   }
 
   // ----------------------------------------------------------
-  // GET /images/* -> sirve imágenes estáticas
+  // GET /images/* -> sirve imágenes estáticas desde la raíz
   // ----------------------------------------------------------
   if (url.startsWith('/images/') && req.method === 'GET') {
-    const imgPath = path.join(__dirname, url);
+    const fileName = path.basename(url);
+    const imgPath = path.join(__dirname, fileName);
     fs.readFile(imgPath, (err, data) => {
       if (err) {
         res.writeHead(404);
