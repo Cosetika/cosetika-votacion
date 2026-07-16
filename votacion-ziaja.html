@@ -296,6 +296,69 @@
   }
   .resumen-stat .num { font-size: 32px; font-weight: 700; color: var(--verde); }
   .resumen-stat .lbl { font-size: 12px; color: var(--texto-secundario); margin-top: 4px; }
+
+  /* CATÁLOGO CON TOGGLES */
+  .catalogo-linea {
+    background: white;
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .catalogo-linea-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--verde-claro);
+    cursor: pointer;
+    user-select: none;
+  }
+  .catalogo-linea-titulo { font-size: 14px; font-weight: 700; color: var(--verde); }
+  .catalogo-linea-meta { display: flex; align-items: center; gap: 12px; }
+  .catalogo-linea-count { font-size: 12px; color: var(--texto-secundario); }
+  .catalogo-linea-body { display: none; }
+  .catalogo-linea-body.abierto { display: block; }
+  .toggle-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid #F5F5F5;
+  }
+  .toggle-wrap:last-child { border-bottom: none; }
+  .toggle-info { flex: 1; }
+  .toggle-nombre { font-size: 13px; font-weight: 500; }
+  .toggle-cat { font-size: 11px; color: var(--texto-secundario); margin-top: 2px; }
+  .toggle {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+    margin-left: 12px;
+  }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider {
+    position: absolute;
+    inset: 0;
+    background: #BDBDBD;
+    border-radius: 24px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .toggle-slider:before {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 3px;
+    top: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.2s;
+  }
+  .toggle input:checked + .toggle-slider { background: var(--verde); }
+  .toggle input:checked + .toggle-slider:before { transform: translateX(20px); }
 </style>
 </head>
 <body>
@@ -311,6 +374,7 @@
     <div class="admin-tabs">
       <button class="admin-tab activo" onclick="cambiarTab('ranking', this)">Ranking de productos</button>
       <button class="admin-tab" onclick="cambiarTab('distribuidoras', this)">Distribuidoras</button>
+      <button class="admin-tab" onclick="cambiarTab('catalogo', this)">Catálogo</button>
     </div>
     <div id="admin-contenido-tab"></div>
   </div>
@@ -554,7 +618,8 @@
     tabActual = tab;
     document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('activo'));
     el.classList.add('activo');
-    renderTab();
+    if (tab === 'catalogo') renderCatalogo();
+    else renderTab();
   };
 
   async function renderTab() {
@@ -596,6 +661,79 @@
       }
     }
   }
+
+  // ── CATÁLOGO ADMIN ─────────────────────────────────────────
+  let todosCatalogo = [];
+
+  async function renderCatalogo() {
+    const cont = document.getElementById('admin-contenido-tab');
+    cont.innerHTML = '<p style="color:#999;text-align:center;padding:20px">Cargando catálogo...</p>';
+    try {
+      const resp = await fetch('/api/votacion/catalogo');
+      todosCatalogo = await resp.json();
+    } catch(e) {
+      cont.innerHTML = '<p style="color:#C62828;text-align:center;padding:20px">Error al cargar catálogo.</p>';
+      return;
+    }
+
+    // Agrupar por línea
+    const porLinea = {};
+    todosCatalogo.forEach(p => {
+      const l = p.linea;
+      if (!porLinea[l]) porLinea[l] = [];
+      porLinea[l].push(p);
+    });
+
+    const activos = todosCatalogo.filter(p => p.activo).length;
+    cont.innerHTML = `
+      <p style="font-size:13px;color:#666;margin-bottom:16px">
+        <strong>${activos}</strong> de <strong>${todosCatalogo.length}</strong> productos activos (visibles para distribuidoras).
+        Haz clic en una línea para expandirla.
+      </p>
+      ${Object.entries(porLinea).sort((a,b) => a[0].localeCompare(b[0])).map(([linea, prods]) => {
+        const activosLinea = prods.filter(p => p.activo).length;
+        return `
+          <div class="catalogo-linea">
+            <div class="catalogo-linea-header" onclick="toggleLinea('linea-${esc(linea).replace(/\s/g,'-')}')">
+              <span class="catalogo-linea-titulo">${esc(linea)}</span>
+              <div class="catalogo-linea-meta">
+                <span class="catalogo-linea-count">${activosLinea}/${prods.length} activos</span>
+                <span style="color:var(--verde);font-size:18px">▾</span>
+              </div>
+            </div>
+            <div class="catalogo-linea-body" id="linea-${esc(linea).replace(/\s/g,'-')}">
+              ${prods.map(p => `
+                <div class="toggle-wrap" id="wrap-${p.id}">
+                  <div class="toggle-info">
+                    <div class="toggle-nombre">${esc(p.nombre)}</div>
+                    <div class="toggle-cat">${esc(p.categoria)}</div>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox" ${p.activo ? 'checked' : ''} onchange="toggleProducto(${p.id}, this.checked)">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>`).join('')}
+            </div>
+          </div>`;
+      }).join('')}`;
+  }
+
+  window.toggleLinea = (id) => {
+    const body = document.getElementById(id);
+    if (body) body.classList.toggle('abierto');
+  };
+
+  window.toggleProducto = async (id, activo) => {
+    try {
+      await fetch('/api/votacion/producto/' + id, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ activo })
+      });
+    } catch(e) {
+      alert('Error al actualizar el producto. Intenta de nuevo.');
+    }
+  };
 
   function esc(str) {
     if (str == null) return '';
