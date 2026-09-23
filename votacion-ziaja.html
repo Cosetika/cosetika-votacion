@@ -588,6 +588,8 @@
   window.salirAdmin = () => {
     document.getElementById('panel-admin').classList.remove('visible');
     document.getElementById('pagina-principal').style.display = 'block';
+    // Recargar productos para reflejar cambios de visibilidad
+    cargarProductos();
   };
 
   let tabActual = 'ranking';
