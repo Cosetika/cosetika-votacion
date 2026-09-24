@@ -12,148 +12,66 @@
     --borde: #E0E0E0;
     --texto-secundario: #757575;
     --fondo: #FAFAFA;
+    --estrella: #F9A825;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, 'Segoe UI', Arial, sans-serif; background: var(--fondo); color: #212121; }
 
-  header {
-    background: var(--verde);
-    color: white;
-    padding: 20px 16px;
-    text-align: center;
-    position: relative;
-  }
+  header { background: var(--verde); color: white; padding: 20px 16px; text-align: center; position: relative; }
   header h1 { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
   header p { font-size: 14px; opacity: 0.9; }
   .btn-admin {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    background: rgba(255,255,255,0.15);
-    color: white;
+    position: absolute; top: 16px; right: 16px;
+    background: rgba(255,255,255,0.15); color: white;
     border: 1px solid rgba(255,255,255,0.4);
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 12px;
-    cursor: pointer;
+    padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer;
   }
   .btn-admin:hover { background: rgba(255,255,255,0.25); }
   @media (max-width: 768px) { .btn-admin { display: none; } }
 
   .contenedor { max-width: 960px; margin: 0 auto; padding: 16px; }
 
-  /* IDENTIDAD */
-  .panel-identidad {
-    background: white;
-    border: 1px solid var(--borde);
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 16px;
-  }
+  .panel-identidad { background: white; border: 1px solid var(--borde); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
   .panel-identidad label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #424242; }
-  .panel-identidad input {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid var(--borde);
-    border-radius: 8px;
-    font-size: 15px;
-  }
+  .panel-identidad input { width: 100%; padding: 10px 12px; border: 1px solid var(--borde); border-radius: 8px; font-size: 15px; }
   .panel-identidad input:focus { outline: none; border-color: var(--verde-medio); }
 
-  /* FILTRO DROPDOWN */
-  .filtro-wrap {
-    background: white;
-    border: 1px solid var(--borde);
-    border-radius: 12px;
-    padding: 12px 16px;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+  .filtro-wrap { background: white; border: 1px solid var(--borde); border-radius: 12px; padding: 12px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
   .filtro-wrap label { font-size: 13px; font-weight: 600; color: #424242; white-space: nowrap; }
-  .filtro-wrap select {
-    flex: 1;
-    padding: 9px 12px;
-    border: 1px solid var(--borde);
-    border-radius: 8px;
-    font-size: 14px;
-    background: white;
-    cursor: pointer;
-  }
+  .filtro-wrap select { flex: 1; padding: 9px 12px; border: 1px solid var(--borde); border-radius: 8px; font-size: 14px; background: white; cursor: pointer; }
   .filtro-wrap select:focus { outline: none; border-color: var(--verde-medio); }
 
   .contador-votos { text-align: center; font-size: 13px; color: var(--texto-secundario); margin-bottom: 16px; }
   .contador-votos strong { color: var(--verde); }
 
   /* GRID */
-  .grid-productos {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 12px;
-    margin-bottom: 80px;
-  }
-  .tarjeta {
-    background: white;
-    border: 2px solid var(--borde);
-    border-radius: 12px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    cursor: pointer;
-    transition: border-color 0.15s, box-shadow 0.15s;
-  }
-  .tarjeta:hover { border-color: #A5D6A7; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-  .tarjeta.seleccionada { border-color: var(--verde-medio); box-shadow: 0 0 0 1px var(--verde-medio); }
-  .tarjeta-img {
-    width: 100%;
-    height: 180px;
-    background: #F8F8F8;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
+  .grid-productos { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-bottom: 80px; }
+  .tarjeta { background: white; border: 2px solid var(--borde); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; transition: border-color 0.15s, box-shadow 0.15s; }
+  .tarjeta.tiene-voto { border-color: var(--verde-medio); box-shadow: 0 0 0 1px var(--verde-medio); }
+  .tarjeta-img { width: 100%; height: 180px; background: #F8F8F8; display: flex; align-items: center; justify-content: center; overflow: hidden; }
   .tarjeta-img img { max-width: 100%; max-height: 180px; width: auto; height: auto; object-fit: contain; }
   .tarjeta-img .sin-foto { font-size: 11px; color: #BDBDBD; }
   .tarjeta-cuerpo { padding: 10px; flex: 1; display: flex; flex-direction: column; }
   .tarjeta-linea { font-size: 10px; text-transform: uppercase; color: var(--texto-secundario); font-weight: 600; margin-bottom: 3px; }
   .tarjeta-nombre { font-size: 12px; font-weight: 500; line-height: 1.3; flex: 1; margin-bottom: 8px; }
-  .boton-votar {
-    width: 100%;
-    padding: 7px;
-    border-radius: 8px;
-    border: 1px solid var(--borde);
-    background: white;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--verde);
+
+  /* ESTRELLAS */
+  .votar-label { font-size: 10px; font-weight: 700; color: var(--texto-secundario); text-align: center; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .estrellas-wrap { display: flex; justify-content: center; gap: 4px; padding: 4px 0; }
+  .estrella {
+    font-size: 24px;
     cursor: pointer;
+    color: #E0E0E0;
+    transition: color 0.15s, transform 0.1s;
+    line-height: 1;
+    user-select: none;
   }
-  .boton-votar.activo { background: var(--verde); color: white; border-color: var(--verde); }
+  .estrella:hover { transform: scale(1.2); }
+  .estrella.activa { color: var(--estrella); }
 
   /* BARRA ENVIO */
-  .barra-envio {
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    background: white;
-    border-top: 1px solid var(--borde);
-    padding: 12px 16px;
-    text-align: center;
-    z-index: 100;
-  }
-  .boton-enviar {
-    width: 100%;
-    max-width: 400px;
-    padding: 14px;
-    border-radius: 10px;
-    border: none;
-    background: var(--verde);
-    color: white;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-  }
+  .barra-envio { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid var(--borde); padding: 12px 16px; text-align: center; z-index: 100; }
+  .boton-enviar { width: 100%; max-width: 400px; padding: 14px; border-radius: 10px; border: none; background: var(--verde); color: white; font-size: 15px; font-weight: 600; cursor: pointer; }
   .boton-enviar:disabled { background: #BDBDBD; cursor: not-allowed; }
 
   .mensaje-final { text-align: center; padding: 60px 20px; }
@@ -162,202 +80,64 @@
   .mensaje-final p { color: var(--texto-secundario); }
 
   /* MODAL ADMIN */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 200;
-    align-items: center;
-    justify-content: center;
-  }
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: center; justify-content: center; }
   .modal-overlay.visible { display: flex; }
-  .modal {
-    background: white;
-    border-radius: 16px;
-    padding: 28px;
-    width: 90%;
-    max-width: 480px;
-    max-height: 90vh;
-    overflow-y: auto;
-  }
+  .modal { background: white; border-radius: 16px; padding: 28px; width: 90%; max-width: 480px; max-height: 90vh; overflow-y: auto; }
   .modal h2 { font-size: 18px; margin-bottom: 16px; color: var(--verde); }
-  .modal input {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid var(--borde);
-    border-radius: 8px;
-    font-size: 15px;
-    margin-bottom: 12px;
-  }
+  .modal input { width: 100%; padding: 10px 12px; border: 1px solid var(--borde); border-radius: 8px; font-size: 15px; margin-bottom: 12px; }
   .modal input:focus { outline: none; border-color: var(--verde-medio); }
   .modal-btns { display: flex; gap: 8px; }
-  .btn-primary {
-    flex: 1;
-    padding: 10px;
-    background: var(--verde);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .btn-secondary {
-    flex: 1;
-    padding: 10px;
-    background: white;
-    color: #424242;
-    border: 1px solid var(--borde);
-    border-radius: 8px;
-    font-size: 14px;
-    cursor: pointer;
-  }
+  .btn-primary { flex: 1; padding: 10px; background: var(--verde); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .btn-secondary { flex: 1; padding: 10px; background: white; color: #424242; border: 1px solid var(--borde); border-radius: 8px; font-size: 14px; cursor: pointer; }
   .error-msg { color: #C62828; font-size: 13px; margin-bottom: 8px; }
 
   /* PANEL ADMIN */
   .panel-admin { display: none; }
   .panel-admin.visible { display: block; }
-  .admin-header {
-    background: var(--verde);
-    color: white;
-    padding: 16px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+  .admin-header { background: var(--verde); color: white; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; }
   .admin-header h2 { font-size: 18px; }
-  .btn-salir {
-    background: rgba(255,255,255,0.2);
-    color: white;
-    border: 1px solid rgba(255,255,255,0.4);
-    padding: 6px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 13px;
-  }
+  .btn-salir { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; }
   .admin-contenido { max-width: 960px; margin: 0 auto; padding: 20px 16px; }
   .admin-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
-  .admin-tab {
-    padding: 8px 20px;
-    border-radius: 8px;
-    border: 1px solid var(--borde);
-    background: white;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    color: #424242;
-  }
+  .admin-tab { padding: 8px 20px; border-radius: 8px; border: 1px solid var(--borde); background: white; cursor: pointer; font-size: 14px; font-weight: 600; color: #424242; }
   .admin-tab.activo { background: var(--verde); color: white; border-color: var(--verde); }
 
-  .ranking-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: white;
-    border: 1px solid var(--borde);
-    border-radius: 10px;
-    padding: 12px 16px;
-    margin-bottom: 8px;
-  }
-  .ranking-pos { font-size: 18px; font-weight: 700; color: var(--verde); min-width: 32px; }
-  .ranking-info { flex: 1; }
-  .ranking-nombre { font-size: 14px; font-weight: 600; }
-  .ranking-linea { font-size: 12px; color: var(--texto-secundario); }
-  .ranking-votos {
-    background: var(--verde-claro);
-    color: var(--verde);
-    font-weight: 700;
-    font-size: 14px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    white-space: nowrap;
-  }
-
-  .distrib-item {
-    background: white;
-    border: 1px solid var(--borde);
-    border-radius: 10px;
-    padding: 14px 16px;
-    margin-bottom: 8px;
-  }
-  .distrib-nombre { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
-  .distrib-productos { font-size: 12px; color: var(--texto-secundario); line-height: 1.6; }
-  .distrib-count { font-size: 11px; color: var(--verde); font-weight: 600; margin-bottom: 4px; }
-
-  .resumen-stat {
-    background: white;
-    border: 1px solid var(--borde);
-    border-radius: 10px;
-    padding: 16px;
-    text-align: center;
-    display: inline-block;
-    margin: 0 8px 16px 0;
-    min-width: 140px;
-  }
-  .resumen-stat .num { font-size: 32px; font-weight: 700; color: var(--verde); }
+  /* RESUMEN ADMIN */
+  .resumen-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin-bottom: 20px; }
+  .resumen-stat { background: white; border: 1px solid var(--borde); border-radius: 10px; padding: 16px; text-align: center; }
+  .resumen-stat .num { font-size: 28px; font-weight: 700; color: var(--verde); }
   .resumen-stat .lbl { font-size: 12px; color: var(--texto-secundario); margin-top: 4px; }
 
-  /* CATÁLOGO CON TOGGLES */
-  .catalogo-linea {
-    background: white;
-    border: 1px solid var(--borde);
-    border-radius: 10px;
-    margin-bottom: 10px;
-    overflow: hidden;
-  }
-  .catalogo-linea-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-    background: var(--verde-claro);
-    cursor: pointer;
-    user-select: none;
-  }
-  .catalogo-linea-titulo { font-size: 14px; font-weight: 700; color: var(--verde); }
-  .catalogo-linea-meta { display: flex; align-items: center; gap: 12px; }
-  .catalogo-linea-count { font-size: 12px; color: var(--texto-secundario); }
-  .catalogo-linea-body { display: none; }
-  .catalogo-linea-body.abierto { display: block; }
-  .toggle-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 16px;
-    border-bottom: 1px solid #F5F5F5;
-  }
-  .toggle-wrap:last-child { border-bottom: none; }
-  .toggle-info { flex: 1; }
-  .toggle-nombre { font-size: 13px; font-weight: 500; }
-  .toggle-cat { font-size: 11px; color: var(--texto-secundario); margin-top: 2px; }
-  .toggle {
-    position: relative;
-    width: 44px;
-    height: 24px;
-    flex-shrink: 0;
-    margin-left: 12px;
-  }
+  /* TOP 5 */
+  .top-label { font-size: 13px; font-weight: 700; color: #424242; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .top-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin-bottom: 24px; }
+  .top-card { background: white; border: 2px solid var(--estrella); border-radius: 10px; padding: 12px; text-align: center; position: relative; }
+  .top-pos { position: absolute; top: 8px; left: 10px; font-size: 18px; font-weight: 800; color: var(--verde); }
+  .top-nombre { font-size: 12px; font-weight: 600; line-height: 1.3; margin-bottom: 6px; margin-top: 8px; }
+  .top-linea { font-size: 10px; color: var(--texto-secundario); margin-bottom: 6px; }
+  .top-puntaje { font-size: 13px; font-weight: 700; color: var(--estrella); }
+
+  /* RANKING */
+  .ranking-item { display: flex; align-items: center; gap: 12px; background: white; border: 1px solid var(--borde); border-radius: 10px; padding: 12px 16px; margin-bottom: 8px; }
+  .ranking-pos { font-size: 16px; font-weight: 700; color: var(--verde); min-width: 28px; }
+  .ranking-info { flex: 1; }
+  .ranking-nombre { font-size: 13px; font-weight: 600; }
+  .ranking-linea { font-size: 11px; color: var(--texto-secundario); }
+  .ranking-stats { text-align: right; }
+  .ranking-puntaje { font-size: 14px; font-weight: 700; color: var(--estrella); }
+  .ranking-detalle { font-size: 11px; color: var(--texto-secundario); margin-top: 2px; }
+
+  /* DISTRIBUIDORAS */
+  .distrib-item { background: white; border: 1px solid var(--borde); border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
+  .distrib-nombre { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .distrib-count { font-size: 11px; color: var(--verde); font-weight: 600; margin-bottom: 4px; }
+  .distrib-productos { font-size: 12px; color: var(--texto-secundario); line-height: 1.6; }
+
+  /* CATÁLOGO */
+  .toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; margin-left: 12px; }
   .toggle input { opacity: 0; width: 0; height: 0; }
-  .toggle-slider {
-    position: absolute;
-    inset: 0;
-    background: #BDBDBD;
-    border-radius: 24px;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  .toggle-slider:before {
-    content: '';
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    left: 3px;
-    top: 3px;
-    background: white;
-    border-radius: 50%;
-    transition: transform 0.2s;
-  }
+  .toggle-slider { position: absolute; inset: 0; background: #BDBDBD; border-radius: 24px; cursor: pointer; transition: background 0.2s; }
+  .toggle-slider:before { content: ''; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px; background: white; border-radius: 50%; transition: transform 0.2s; }
   .toggle input:checked + .toggle-slider { background: var(--verde); }
   .toggle input:checked + .toggle-slider:before { transform: translateX(20px); }
 </style>
@@ -385,7 +165,7 @@
 <div id="pagina-principal">
   <header>
     <h1>Vota por los próximos productos Ziaja</h1>
-    <p>Ayúdanos a elegir qué traer a Ecuador. Elige tus favoritos.</p>
+    <p>Dale 1, 2 o 3 estrellas a los productos que te interesen traer a Ecuador.</p>
     <button class="btn-admin" onclick="abrirModalAdmin()">Admin</button>
   </header>
 
@@ -413,11 +193,8 @@
 
 <script>
 (function() {
-
-  // ── CONFIGURACIÓN ──────────────────────────────────────────
   const ADMIN_PASSWORD = 'cosetika2025';
 
-  // Fusión de líneas: nombre original en DB -> nombre a mostrar
   const FUSION_LINEAS = {
     'Mascarillas con Ácidos': 'Mascarillas Faciales',
     'Aceites de Masaje': 'Spa & Masajes',
@@ -428,35 +205,24 @@
     'MED Skin Relief': 'MED Rosácea & Piel Sensible',
     'MED Capilares Dilatados / Rosácea': 'MED Rosácea & Piel Sensible',
   };
+  function lineaMostrar(l) { return FUSION_LINEAS[l] || l; }
 
-  function lineaMostrar(linea) {
-    return FUSION_LINEAS[linea] || linea;
-  }
+  // votos: Map<id, estrellas 1-3>
+  let productos = [], lineasMenu = [], filtroActivo = 'Todas';
+  let votos = new Map(); // id -> 1|2|3
+  let nombre = '', enviando = false;
 
-  // ── ESTADO ─────────────────────────────────────────────────
-  let productos = [];
-  let lineasMenu = [];
-  let filtroActivo = 'Todas';
-  let seleccionados = new Set();
-  let nombre = '';
-  let enviando = false;
-
-  // ── CARGA ──────────────────────────────────────────────────
   async function cargarProductos() {
     try {
-      const resp = await fetch('/api/votacion/productos');
-      if (!resp.ok) throw new Error();
-      productos = await resp.json();
-    } catch(e) {
-      productos = [];
-    }
-    // Calcular líneas únicas del menú (ya fusionadas)
+      const r = await fetch('/api/votacion/productos');
+      if (!r.ok) throw new Error();
+      productos = await r.json();
+    } catch(e) { productos = []; }
     const set = new Set(productos.map(p => lineaMostrar(p.linea)));
     lineasMenu = [...set].sort();
     render();
   }
 
-  // ── RENDER ─────────────────────────────────────────────────
   function render() {
     const filtrados = filtroActivo === 'Todas'
       ? productos
@@ -468,7 +234,6 @@
         <label for="campo-nombre">Tu nombre</label>
         <input type="text" id="campo-nombre" placeholder="Ej. María Pérez" value="${esc(nombre)}">
       </div>
-
       <div class="filtro-wrap">
         <label>Filtrar por línea:</label>
         <select id="select-linea">
@@ -476,37 +241,23 @@
           ${lineasMenu.map(l => `<option value="${esc(l)}" ${l === filtroActivo ? 'selected' : ''}>${esc(l)}</option>`).join('')}
         </select>
       </div>
-
       <div class="contador-votos">
-        Has elegido <strong>${seleccionados.size}</strong> producto${seleccionados.size !== 1 ? 's' : ''}
+        Has votado <strong>${votos.size}</strong> producto${votos.size !== 1 ? 's' : ''}
+        ${votos.size > 0 ? `— Puntaje total: <strong>${[...votos.values()].reduce((a,b)=>a+b,0)} ⭐</strong>` : ''}
       </div>
-
       <div class="grid-productos">
         ${filtrados.map(p => tarjetaHtml(p)).join('')}
-      </div>
-    `;
+      </div>`;
 
-    document.getElementById('campo-nombre').addEventListener('input', e => {
-      nombre = e.target.value;
-      actualizarBoton();
-    });
-
-    document.getElementById('select-linea').addEventListener('change', e => {
-      filtroActivo = e.target.value;
-      render();
-    });
-
-    document.querySelectorAll('.tarjeta').forEach(card => {
-      card.addEventListener('click', () => toggle(Number(card.dataset.id)));
-    });
-
+    document.getElementById('campo-nombre').addEventListener('input', e => { nombre = e.target.value; actualizarBoton(); });
+    document.getElementById('select-linea').addEventListener('change', e => { filtroActivo = e.target.value; render(); });
     actualizarBoton();
   }
 
   function tarjetaHtml(p) {
-    const sel = seleccionados.has(p.id);
+    const v = votos.get(p.id) || 0;
     return `
-      <div class="tarjeta ${sel ? 'seleccionada' : ''}" data-id="${p.id}">
+      <div class="tarjeta ${v > 0 ? 'tiene-voto' : ''}" data-id="${p.id}">
         <div class="tarjeta-img">
           ${p.imagen_url
             ? `<img src="${esc(p.imagen_url)}" alt="${esc(p.nombre)}" loading="lazy">`
@@ -515,50 +266,72 @@
         <div class="tarjeta-cuerpo">
           <div class="tarjeta-linea">${esc(lineaMostrar(p.linea))}</div>
           <div class="tarjeta-nombre">${esc(p.nombre)}</div>
-          <button class="boton-votar ${sel ? 'activo' : ''}">${sel ? 'Elegido ✓' : 'Votar'}</button>
+          <div class="votar-label">Votar</div>
+          <div class="estrellas-wrap" data-id="${p.id}">
+            <span class="estrella ${v >= 1 ? 'activa' : ''}" data-val="1" onclick="setEstrellas(${p.id}, 1, event)">★</span>
+            <span class="estrella ${v >= 2 ? 'activa' : ''}" data-val="2" onclick="setEstrellas(${p.id}, 2, event)">★</span>
+            <span class="estrella ${v >= 3 ? 'activa' : ''}" data-val="3" onclick="setEstrellas(${p.id}, 3, event)">★</span>
+          </div>
         </div>
       </div>`;
   }
 
-  function toggle(id) {
-    if (seleccionados.has(id)) seleccionados.delete(id);
-    else seleccionados.add(id);
-    render();
-  }
+  window.setEstrellas = (id, val, e) => {
+    e.stopPropagation();
+    const actual = votos.get(id) || 0;
+    // Si clic en la misma estrella que ya tiene → deseleccionar
+    if (actual === val) {
+      votos.delete(id);
+    } else {
+      votos.set(id, val);
+    }
+    // Actualizar tarjeta sin re-render completo
+    const card = document.querySelector(`.tarjeta[data-id="${id}"]`);
+    if (card) {
+      const nuevo = votos.get(id) || 0;
+      card.classList.toggle('tiene-voto', nuevo > 0);
+      card.querySelectorAll('.estrella').forEach((s, i) => {
+        s.classList.toggle('activa', i < nuevo);
+      });
+    }
+    // Actualizar contador
+    const cont = document.querySelector('.contador-votos');
+    if (cont) {
+      const total = [...votos.values()].reduce((a,b)=>a+b,0);
+      cont.innerHTML = `Has votado <strong>${votos.size}</strong> producto${votos.size !== 1 ? 's' : ''}${votos.size > 0 ? ` — Puntaje total: <strong>${total} ⭐</strong>` : ''}`;
+    }
+    actualizarBoton();
+  };
 
-  function puedeEnviar() {
-    return nombre.trim().length >= 2 && seleccionados.size > 0 && !enviando;
-  }
+  function puedeEnviar() { return nombre.trim().length >= 2 && votos.size > 0 && !enviando; }
 
   function actualizarBoton() {
     const btn = document.getElementById('boton-enviar');
     if (!btn) return;
     btn.disabled = !puedeEnviar();
-    btn.textContent = enviando ? 'Enviando...' : `Enviar mi votación (${seleccionados.size})`;
+    btn.textContent = enviando ? 'Enviando...' : `Enviar mi votación (${votos.size})`;
   }
 
-  // ── ENVÍO ──────────────────────────────────────────────────
   document.getElementById('boton-enviar').addEventListener('click', async () => {
     if (!puedeEnviar()) return;
-    enviando = true;
-    actualizarBoton();
+    enviando = true; actualizarBoton();
     try {
+      const votos_array = [...votos.entries()].map(([id, estrellas]) => ({ id, estrellas }));
       const resp = await fetch('/api/votacion/votar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre: nombre.trim(), telefono: 'N/A', producto_ids: [...seleccionados] })
+        body: JSON.stringify({ nombre: nombre.trim(), votos: votos_array })
       });
       if (!resp.ok) throw new Error();
       document.getElementById('app').innerHTML = `
         <div class="mensaje-final">
           <div class="icono">✅</div>
           <h2>¡Gracias por tu voto!</h2>
-          <p>Registramos tus ${seleccionados.size} elecciones. ¡Gracias por ayudarnos a elegir los próximos productos Ziaja para Ecuador!</p>
+          <p>Registramos tus ${votos.size} elecciones con un puntaje total de ${[...votos.values()].reduce((a,b)=>a+b,0)} ⭐. ¡Gracias por ayudarnos!</p>
         </div>`;
       document.querySelector('.barra-envio').style.display = 'none';
     } catch(e) {
-      enviando = false;
-      actualizarBoton();
+      enviando = false; actualizarBoton();
       alert('Hubo un problema al enviar. Por favor intenta de nuevo.');
     }
   });
@@ -570,30 +343,21 @@
     document.getElementById('error-password').style.display = 'none';
     setTimeout(() => document.getElementById('input-password').focus(), 100);
   };
-
-  window.cerrarModalAdmin = () => {
-    document.getElementById('modal-admin').classList.remove('visible');
-  };
-
+  window.cerrarModalAdmin = () => document.getElementById('modal-admin').classList.remove('visible');
   window.verificarPassword = () => {
-    const pw = document.getElementById('input-password').value;
-    if (pw === ADMIN_PASSWORD) {
-      cerrarModalAdmin();
-      abrirAdmin();
+    if (document.getElementById('input-password').value === ADMIN_PASSWORD) {
+      cerrarModalAdmin(); abrirAdmin();
     } else {
       document.getElementById('error-password').style.display = 'block';
     }
   };
-
   window.salirAdmin = () => {
     document.getElementById('panel-admin').classList.remove('visible');
     document.getElementById('pagina-principal').style.display = 'block';
-    // Recargar productos para reflejar cambios de visibilidad
     cargarProductos();
   };
 
-  let tabActual = 'ranking';
-  let datosAdmin = null;
+  let tabActual = 'ranking', datosAdmin = null;
 
   async function abrirAdmin() {
     document.getElementById('pagina-principal').style.display = 'none';
@@ -605,16 +369,33 @@
   }
 
   function renderResumen() {
-    const totalVotos = datosAdmin.reduce((s, p) => s + Number(p.total_votos), 0);
-    const distribuidoras = new Set();
-    // No tenemos los nombres aquí, así que mostramos total de votos y productos con votos
+    const totalVotos = datosAdmin.reduce((s,p) => s + Number(p.total_votos), 0);
+    const totalPuntaje = datosAdmin.reduce((s,p) => s + Number(p.puntaje_total), 0);
     const conVotos = datosAdmin.filter(p => Number(p.total_votos) > 0).length;
+    const promEstrellas = totalVotos > 0 ? (totalPuntaje / totalVotos).toFixed(1) : '—';
+
+    // TOP 5
+    const top5 = [...datosAdmin].sort((a,b) => Number(b.puntaje_total) - Number(a.puntaje_total)).filter(p => Number(p.total_votos) > 0).slice(0, 5);
+
     document.getElementById('admin-resumen').innerHTML = `
-      <div style="margin-bottom:16px">
+      <div class="resumen-grid">
         <div class="resumen-stat"><div class="num">${totalVotos}</div><div class="lbl">Votos totales</div></div>
+        <div class="resumen-stat"><div class="num">${totalPuntaje} ⭐</div><div class="lbl">Puntaje total</div></div>
+        <div class="resumen-stat"><div class="num">${promEstrellas}</div><div class="lbl">Promedio estrellas</div></div>
         <div class="resumen-stat"><div class="num">${conVotos}</div><div class="lbl">Productos votados</div></div>
-        <div class="resumen-stat"><div class="num">${datosAdmin.length}</div><div class="lbl">Productos en catálogo</div></div>
-      </div>`;
+        <div class="resumen-stat"><div class="num">${datosAdmin.length}</div><div class="lbl">En catálogo</div></div>
+      </div>
+      ${top5.length > 0 ? `
+        <div class="top-label">⭐ Top ${top5.length} más votados</div>
+        <div class="top-grid">
+          ${top5.map((p, i) => `
+            <div class="top-card">
+              <div class="top-pos">#${i+1}</div>
+              <div class="top-nombre">${esc(p.nombre)}</div>
+              <div class="top-linea">${esc(lineaMostrar(p.linea))}</div>
+              <div class="top-puntaje">${p.puntaje_total} pts · ${p.total_votos} votos</div>
+            </div>`).join('')}
+        </div>` : ''}`;
   }
 
   window.cambiarTab = (tab, el) => {
@@ -628,7 +409,7 @@
   async function renderTab() {
     const cont = document.getElementById('admin-contenido-tab');
     if (tabActual === 'ranking') {
-      const ordenados = [...datosAdmin].sort((a, b) => Number(b.total_votos) - Number(a.total_votos));
+      const ordenados = [...datosAdmin].sort((a,b) => Number(b.puntaje_total) - Number(a.puntaje_total));
       const conVotos = ordenados.filter(p => Number(p.total_votos) > 0);
       if (conVotos.length === 0) {
         cont.innerHTML = '<p style="color:#999;text-align:center;padding:40px">Aún no hay votos registrados.</p>';
@@ -636,15 +417,17 @@
       }
       cont.innerHTML = conVotos.map((p, i) => `
         <div class="ranking-item">
-          <div class="ranking-pos">#${i + 1}</div>
+          <div class="ranking-pos">#${i+1}</div>
           <div class="ranking-info">
             <div class="ranking-nombre">${esc(p.nombre)}</div>
             <div class="ranking-linea">${esc(lineaMostrar(p.linea))}</div>
           </div>
-          <div class="ranking-votos">${p.total_votos} voto${Number(p.total_votos) !== 1 ? 's' : ''}</div>
+          <div class="ranking-stats">
+            <div class="ranking-puntaje">${p.puntaje_total} pts</div>
+            <div class="ranking-detalle">${p.total_votos} voto${Number(p.total_votos)!==1?'s':''} · prom. ${Number(p.promedio_estrellas).toFixed(1)} ⭐</div>
+          </div>
         </div>`).join('');
     } else {
-      // Cargar distribuidoras
       cont.innerHTML = '<p style="color:#999;text-align:center;padding:20px">Cargando...</p>';
       try {
         const resp = await fetch('/api/votacion/distribuidoras');
@@ -656,7 +439,7 @@
         cont.innerHTML = data.map(d => `
           <div class="distrib-item">
             <div class="distrib-nombre">${esc(d.nombre)}</div>
-            <div class="distrib-count">${d.productos.length} producto${d.productos.length !== 1 ? 's' : ''} elegido${d.productos.length !== 1 ? 's' : ''}</div>
+            <div class="distrib-count">${d.productos.length} producto${d.productos.length!==1?'s':''} · ${d.puntaje_total} pts totales</div>
             <div class="distrib-productos">${d.productos.map(p => esc(p)).join(' · ')}</div>
           </div>`).join('');
       } catch(e) {
@@ -665,12 +448,9 @@
     }
   }
 
-  // ── CATÁLOGO ADMIN ─────────────────────────────────────────
   async function renderCatalogo() {
     const cont = document.getElementById('admin-contenido-tab');
     cont.innerHTML = '<p style="color:#999;text-align:center;padding:20px">Cargando...</p>';
-
-    // Cargar TODOS los productos (activos e inactivos) — misma API pero sin filtro activo
     let todos = [];
     try {
       const resp = await fetch('/api/votacion/catalogo');
@@ -679,7 +459,6 @@
       cont.innerHTML = '<p style="color:#C62828;text-align:center;padding:20px">Error al cargar catálogo.</p>';
       return;
     }
-
     const activos = todos.filter(p => p.activo).length;
     cont.innerHTML = `
       <p style="font-size:13px;color:#666;margin-bottom:16px">
@@ -687,7 +466,7 @@
       </p>
       <div class="grid-productos">
         ${todos.map(p => `
-          <div onclick="toggleProducto(${p.id})" style="background:white;border:2px solid ${p.activo ? 'var(--verde-medio)' : '#E0E0E0'};border-radius:12px;overflow:hidden;cursor:pointer;opacity:${p.activo ? '1' : '0.45'};transition:all 0.2s;" id="card-cat-${p.id}">
+          <div onclick="toggleProducto(${p.id})" style="background:white;border:2px solid ${p.activo?'var(--verde-medio)':'#E0E0E0'};border-radius:12px;overflow:hidden;cursor:pointer;opacity:${p.activo?'1':'0.45'};transition:all 0.2s;" id="card-cat-${p.id}">
             <div style="width:100%;height:180px;background:#F8F8F8;display:flex;align-items:center;justify-content:center;overflow:hidden;">
               ${p.imagen_url
                 ? `<img src="${esc(p.imagen_url)}" alt="${esc(p.nombre)}" loading="lazy" style="max-width:100%;max-height:180px;object-fit:contain;">`
@@ -696,7 +475,7 @@
             <div style="padding:10px;">
               <div style="font-size:10px;text-transform:uppercase;color:#757575;font-weight:600;margin-bottom:3px;">${esc(p.linea)}</div>
               <div style="font-size:12px;font-weight:500;line-height:1.3;margin-bottom:8px;">${esc(p.nombre)}</div>
-              <div style="text-align:center;padding:6px;border-radius:8px;font-size:12px;font-weight:600;background:${p.activo ? 'var(--verde)' : '#F5F5F5'};color:${p.activo ? 'white' : '#999'};" class="cat-btn" data-activo="${p.activo ? '1' : '0'}">
+              <div style="text-align:center;padding:6px;border-radius:8px;font-size:12px;font-weight:600;background:${p.activo?'var(--verde)':'#F5F5F5'};color:${p.activo?'white':'#999'};" class="cat-btn" data-activo="${p.activo?'1':'0'}">
                 ${p.activo ? '✓ Visible' : 'Oculto'}
               </div>
             </div>
@@ -709,35 +488,13 @@
     const btn = card ? card.querySelector('.cat-btn') : null;
     const eraActivo = btn && btn.dataset.activo === '1';
     const nuevoActivo = !eraActivo;
-    // Actualizar UI inmediatamente
-    if (card) {
-      card.style.opacity = nuevoActivo ? '1' : '0.45';
-      card.style.borderColor = nuevoActivo ? 'var(--verde-medio)' : '#E0E0E0';
-    }
-    if (btn) {
-      btn.dataset.activo = nuevoActivo ? '1' : '0';
-      btn.style.background = nuevoActivo ? 'var(--verde)' : '#F5F5F5';
-      btn.style.color = nuevoActivo ? 'white' : '#999';
-      btn.textContent = nuevoActivo ? '✓ Visible' : 'Oculto';
-    }
+    if (card) { card.style.opacity = nuevoActivo ? '1' : '0.45'; card.style.borderColor = nuevoActivo ? 'var(--verde-medio)' : '#E0E0E0'; }
+    if (btn) { btn.dataset.activo = nuevoActivo ? '1' : '0'; btn.style.background = nuevoActivo ? 'var(--verde)' : '#F5F5F5'; btn.style.color = nuevoActivo ? 'white' : '#999'; btn.textContent = nuevoActivo ? '✓ Visible' : 'Oculto'; }
     try {
-      await fetch('/api/votacion/producto/' + id, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ activo: nuevoActivo })
-      });
+      await fetch('/api/votacion/producto/' + id, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ activo: nuevoActivo }) });
     } catch(e) {
-      // Revertir si falla
-      if (card) {
-        card.style.opacity = eraActivo ? '1' : '0.45';
-        card.style.borderColor = eraActivo ? 'var(--verde-medio)' : '#E0E0E0';
-      }
-      if (btn) {
-        btn.dataset.activo = eraActivo ? '1' : '0';
-        btn.style.background = eraActivo ? 'var(--verde)' : '#F5F5F5';
-        btn.style.color = eraActivo ? 'white' : '#999';
-        btn.textContent = eraActivo ? '✓ Visible' : 'Oculto';
-      }
+      if (card) { card.style.opacity = eraActivo ? '1' : '0.45'; card.style.borderColor = eraActivo ? 'var(--verde-medio)' : '#E0E0E0'; }
+      if (btn) { btn.dataset.activo = eraActivo ? '1' : '0'; btn.style.background = eraActivo ? 'var(--verde)' : '#F5F5F5'; btn.style.color = eraActivo ? 'white' : '#999'; btn.textContent = eraActivo ? '✓ Visible' : 'Oculto'; }
       alert('Error al actualizar. Intenta de nuevo.');
     }
   };
