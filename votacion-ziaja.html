@@ -166,6 +166,7 @@
   <header>
     <h1>Vota por los próximos productos Ziaja</h1>
     <p>Dale 1, 2 o 3 estrellas a los productos que te interesen traer a Ecuador.</p>
+    <p style="margin-top:8px;font-size:13px;background:rgba(255,255,255,0.15);display:inline-block;padding:4px 12px;border-radius:20px;">🏆 Los 15 productos más votados serán importados a Ecuador</p>
     <button class="btn-admin" onclick="abrirModalAdmin()">Admin</button>
   </header>
 
@@ -240,6 +241,7 @@
           <option value="Todas">— Todas las líneas —</option>
           ${lineasMenu.map(l => `<option value="${esc(l)}" ${l === filtroActivo ? 'selected' : ''}>${esc(l)}</option>`).join('')}
         </select>
+        <span style="font-size:12px;color:var(--texto-secundario);white-space:nowrap;">${productos.length} productos</span>
       </div>
       <div class="contador-votos">
         Has votado <strong>${votos.size}</strong> producto${votos.size !== 1 ? 's' : ''}
