@@ -150,15 +150,20 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  // PATCH /api/votacion/producto/:id -> activar/desactivar
   const patchMatch = url.match(/^\/api\/votacion\/producto\/(\d+)$/);
   if (patchMatch && req.method === 'PATCH') {
     let body = '';
     req.on('data', chunk => { body += chunk; });
     req.on('end', async () => {
       try {
-        const { activo } = JSON.parse(body);
-        await pool.query('UPDATE productos_votacion SET activo = $1 WHERE id = $2', [activo, parseInt(patchMatch[1])]);
+        const data = JSON.parse(body);
+        const id = parseInt(patchMatch[1]);
+        if (data.hasOwnProperty('activo')) {
+          await pool.query('UPDATE productos_votacion SET activo = $1 WHERE id = $2', [data.activo, id]);
+        }
+        if (data.nombre) {
+          await pool.query('UPDATE productos_votacion SET nombre = $1 WHERE id = $2', [String(data.nombre).trim().slice(0, 200), id]);
+        }
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify({ ok: true }));
       } catch (err) {
