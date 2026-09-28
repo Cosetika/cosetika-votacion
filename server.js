@@ -78,7 +78,7 @@ const server = http.createServer(async (req, res) => {
     req.on('data', chunk => { body += chunk; });
     req.on('end', async () => {
       try {
-        const { nombre, votos } = JSON.parse(body);
+        const { nombre, votos, sugerencia } = JSON.parse(body);
         if (!nombre || !Array.isArray(votos) || votos.length === 0) {
           res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
           res.end(JSON.stringify({ error: 'Datos incompletos' }));
@@ -96,6 +96,13 @@ const server = http.createServer(async (req, res) => {
           `INSERT INTO votos_ziaja (nombre_distribuidora, telefono, producto_id, estrellas) VALUES ${placeholders}`,
           valores
         );
+        const sugLimpia = String(sugerencia || '').trim().slice(0, 1000);
+        if (sugLimpia) {
+          await pool.query(
+            'INSERT INTO sugerencias_ziaja (nombre_distribuidora, comentario) VALUES ($1, $2)',
+            [nombreLimpio, sugLimpia]
+          );
+        }
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify({ ok: true }));
       } catch (err) {
@@ -146,6 +153,22 @@ const server = http.createServer(async (req, res) => {
     } catch (err) {
       res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
       res.end(JSON.stringify({ error: 'Error al obtener distribuidoras' }));
+    }
+    return;
+  }
+
+  // GET /api/votacion/sugerencias -> comentarios de productos faltantes
+  if (url === '/api/votacion/sugerencias' && req.method === 'GET') {
+    try {
+      const result = await pool.query(
+        `SELECT id, nombre_distribuidora, comentario, fecha
+         FROM sugerencias_ziaja ORDER BY fecha DESC`
+      );
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify(result.rows));
+    } catch (err) {
+      res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({ error: 'Error al obtener sugerencias' }));
     }
     return;
   }

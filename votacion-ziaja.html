@@ -74,6 +74,16 @@
   .boton-enviar { width: 100%; max-width: 400px; padding: 14px; border-radius: 10px; border: none; background: var(--verde); color: white; font-size: 15px; font-weight: 600; cursor: pointer; }
   .boton-enviar:disabled { background: #BDBDBD; cursor: not-allowed; }
 
+  /* SUGERENCIAS */
+  .panel-sugerencia { background: white; border: 1px solid var(--borde); border-radius: 12px; padding: 16px; margin: 24px 0 90px; }
+  .panel-sugerencia label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; line-height: 1.4; }
+  .panel-sugerencia textarea { width: 100%; min-height: 90px; padding: 10px; border: 1px solid var(--borde); border-radius: 8px; font-family: inherit; font-size: 14px; resize: vertical; box-sizing: border-box; }
+  .panel-sugerencia textarea:focus { outline: none; border-color: var(--verde); }
+  .sug-item { background: white; border: 1px solid var(--borde); border-radius: 10px; padding: 14px; margin-bottom: 10px; }
+  .sug-nombre { font-size: 14px; font-weight: 600; }
+  .sug-fecha { font-size: 11px; color: var(--texto-secundario); margin-bottom: 6px; }
+  .sug-texto { font-size: 14px; white-space: pre-wrap; }
+
   .mensaje-final { text-align: center; padding: 60px 20px; }
   .mensaje-final .icono { font-size: 56px; margin-bottom: 16px; }
   .mensaje-final h2 { color: var(--verde); margin-bottom: 8px; font-size: 22px; }
@@ -156,6 +166,7 @@
       <button class="admin-tab activo" onclick="cambiarTab('ranking', this)">Ranking de productos</button>
       <button class="admin-tab" onclick="cambiarTab('distribuidoras', this)">Distribuidoras</button>
       <button class="admin-tab" onclick="cambiarTab('catalogo', this)">Catálogo</button>
+      <button class="admin-tab" onclick="cambiarTab('sugerencias', this)">Sugerencias</button>
     </div>
     <div id="admin-contenido-tab"></div>
   </div>
@@ -211,7 +222,7 @@
   // votos: Map<id, estrellas 1-3>
   let productos = [], lineasMenu = [], filtroActivo = 'Todas';
   let votos = new Map(); // id -> 1|2|3
-  let nombre = '', enviando = false;
+  let nombre = '', sugerencia = '', enviando = false;
 
   async function cargarProductos() {
     try {
@@ -248,9 +259,14 @@
       </div>
       <div class="grid-productos">
         ${filtrados.map(p => tarjetaHtml(p)).join('')}
+      </div>
+      <div class="panel-sugerencia">
+        <label for="campo-sugerencia">Menciona los productos que hacen falta en la marca Ziaja te gustaría que los trajéramos</label>
+        <textarea id="campo-sugerencia" maxlength="1000" placeholder="Escribe aquí tu comentario (opcional)">${esc(sugerencia)}</textarea>
       </div>`;
 
     document.getElementById('campo-nombre').addEventListener('input', e => { nombre = e.target.value; actualizarBoton(); });
+    document.getElementById('campo-sugerencia').addEventListener('input', e => { sugerencia = e.target.value; });
     document.getElementById('select-linea').addEventListener('change', e => { filtroActivo = e.target.value; render(); });
     actualizarBoton();
   }
@@ -321,7 +337,7 @@
       const resp = await fetch('/api/votacion/votar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre: nombre.trim(), votos: votos_array })
+        body: JSON.stringify({ nombre: nombre.trim(), votos: votos_array, sugerencia: sugerencia.trim() })
       });
       if (!resp.ok) throw new Error();
       document.getElementById('app').innerHTML = `
@@ -404,6 +420,7 @@
     document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('activo'));
     el.classList.add('activo');
     if (tab === 'catalogo') renderCatalogo();
+    else if (tab === 'sugerencias') renderSugerencias();
     else renderTab();
   };
 
@@ -446,6 +463,28 @@
       } catch(e) {
         cont.innerHTML = '<p style="color:#C62828;text-align:center;padding:20px">Error al cargar datos.</p>';
       }
+    }
+  }
+
+  async function renderSugerencias() {
+    const cont = document.getElementById('admin-contenido-tab');
+    cont.innerHTML = '<p style="color:#999;text-align:center;padding:20px">Cargando...</p>';
+    try {
+      const resp = await fetch('/api/votacion/sugerencias');
+      if (!resp.ok) throw new Error();
+      const data = await resp.json();
+      if (data.length === 0) {
+        cont.innerHTML = '<p style="color:#999;text-align:center;padding:40px">Aún no hay sugerencias.</p>';
+        return;
+      }
+      cont.innerHTML = data.map(d => `
+        <div class="sug-item">
+          <div class="sug-nombre">${esc(d.nombre_distribuidora)}</div>
+          <div class="sug-fecha">${new Date(d.fecha).toLocaleString('es-EC')}</div>
+          <div class="sug-texto">${esc(d.comentario)}</div>
+        </div>`).join('');
+    } catch(e) {
+      cont.innerHTML = '<p style="color:#C62828;text-align:center;padding:20px">Error al cargar sugerencias.</p>';
     }
   }
 
